@@ -46,9 +46,9 @@ class ManualEntryDiabetesState extends State<ManualEntryDiabetes> {
     final double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: const Color(0xff050B29),
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: const Color(0xffB9FFB7),
+        backgroundColor: Colors.orange.shade500,
         title: const Text(
           'Manual Entry',
           style: TextStyle(fontWeight: FontWeight.bold),
@@ -120,10 +120,14 @@ class ManualEntryDiabetesState extends State<ManualEntryDiabetes> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xffB9FFB7),
+                    backgroundColor: Colors.orange.shade500,
                     minimumSize: Size(screenWidth * 0.9, screenHeight * 0.06),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
                   ),
-                  child: const Text('Submit'),
+                  child: const Text('Submit',
+                      style: TextStyle(color: Colors.white, fontSize: 28)),
                 ),
                 _sizedBox(screenHeight),
                 Center(
@@ -146,10 +150,10 @@ class ManualEntryDiabetesState extends State<ManualEntryDiabetes> {
   }) {
     return TextFormField(
       keyboardType: TextInputType.number,
-      style: const TextStyle(color: Colors.white),
+      style: const TextStyle(color: Colors.black),
       decoration: InputDecoration(
         labelText: labelText,
-        labelStyle: const TextStyle(color: Colors.white),
+        labelStyle: const TextStyle(color: Colors.black38),
         border: const OutlineInputBorder(),
         suffix: Column(
           children: [

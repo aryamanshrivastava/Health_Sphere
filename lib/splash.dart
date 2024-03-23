@@ -3,8 +3,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-
-import 'home.dart';
+import 'package:helath_sphere/auth/phone.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -20,14 +19,14 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(
         Duration(seconds: 3),
         () => Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => HomeScreen())));
+            context, MaterialPageRoute(builder: (context) => PhoneAuth())));
   }
 
   @override
   Widget build(BuildContext context) {
     double h = MediaQuery.of(context).size.height;
     return Scaffold(
-        backgroundColor: Color(0xff050B29),
+        backgroundColor: Color(0xffffffff),
         body: Center(
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -38,7 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 style: TextStyle(
                     fontSize: h * 0.04,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white)),
+                    color: Colors.orange.shade500)),
           ],
         )));
   }

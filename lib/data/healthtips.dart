@@ -9,54 +9,65 @@ class HealthTips {
     required this.imageUrl,
   });
 }
-
-//data
 final List<HealthTips> healthTips = [
   HealthTips(
-    title: 'Healthy Eating',
+    title: 'Stay Active',
     description:
-        'A healthy diet is a solution to many of our health-care problems. It\'s the most important solution.',
+        'Incorporate physical activity into your daily routine to improve cardiovascular health and boost mood.',
+    imageUrl: 'assets/stay_active.png',
+  ),
+  HealthTips(
+    title: 'Eat a Balanced Diet',
+    description:
+        'Consume a variety of fruits, vegetables, lean proteins, and whole grains for essential nutrients.',
     imageUrl: 'assets/1.png',
   ),
   HealthTips(
-    title: 'Exercise',
+    title: 'Stay Hydrated',
     description:
-        'Exercise is king. Nutrition is queen. Put them together and you\'ve got a kingdom.',
-    imageUrl: 'assets/1.png',
+        'Drink plenty of water throughout the day to support digestion, circulation, and overall health.',
+    imageUrl: 'assets/stay_hydrated.png',
   ),
   HealthTips(
-    title: 'Mental Health',
+    title: 'Get Sufficient Sleep',
     description:
-        'Mental health...is not a destination, but a process. It\'s about how you drive, not where you\'re going.',
-    imageUrl: 'assets/mental_health.jpg',
+        'Aim for 7-9 hours of quality sleep each night to rejuvenate your body and mind.',
+    imageUrl: 'assets/sleep.png',
   ),
   HealthTips(
-    title: 'Sleep',
+    title: 'Manage Stress',
     description:
-        'Sleep is that golden chain that ties health and our bodies together.',
-    imageUrl: 'assets/sleep.jpg',
+        'Practice stress-reducing techniques such as deep breathing or meditation to alleviate tension.',
+    imageUrl: 'assets/manage_stress.png',
   ),
   HealthTips(
-    title: 'Hydration',
+    title: 'Limit Sugary and Processed Foods',
     description:
-        'Drinking water is like washing out your insides. The water will cleanse the system, fill you up, decrease your caloric load and improve the function of all your tissues.',
-    imageUrl: 'assets/hydration.jpg',
+        'Minimize intake of sugary drinks and processed snacks to prevent weight gain and energy crashes.',
+    imageUrl: 'assets/limit_sugar.jpg',
   ),
   HealthTips(
-    title: 'Stress Management',
+    title: 'Prioritize Mental Health',
     description:
-        'The greatest weapon against stress is our ability to choose one thought over another.',
-    imageUrl: 'assets/stress_management.jpg',
+        'Take time for self-care activities and seek support from loved ones or professionals when needed.',
+    imageUrl: 'assets/prioritize_mental_health.jpg',
   ),
   HealthTips(
-    title: 'Social Connection',
+    title: 'Practice Good Hygiene',
     description:
-        'The people who help you maintain a healthy lifestyle are the ones you should be spending the most time with.',
-    imageUrl: 'assets/social_connection.jpg',
+        'Maintain proper hygiene habits such as regular handwashing and dental care to prevent infections.',
+    imageUrl: 'assets/good_hygiene.jpg',
   ),
   HealthTips(
-    title: 'Healthy Habits',
-    description: 'The groundwork of all happiness is health.',
-    imageUrl: 'assets/healthy_habits.jpg',
+    title: 'Stay Connected',
+    description:
+        'Foster meaningful relationships to cultivate a support network that enhances emotional resilience.',
+    imageUrl: 'assets/stay_connected.jpg',
+  ),
+  HealthTips(
+    title: 'Listen to Your Body',
+    description:
+        'Pay attention to your body\'s signals and respond appropriately by resting when needed and seeking medical attention for any concerning symptoms.',
+    imageUrl: 'assets/listen_to_body.jpg',
   ),
 ];

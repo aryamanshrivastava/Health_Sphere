@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "861487421674",
+    "project_id": "health-sphere-ceaea",
+    "storage_bucket": "health-sphere-ceaea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:861487421674:android:c495f5bb639c92e054df93",
+        "android_client_info": {
+          "package_name": "com.example.helath_sphere"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDD3GEpEPFYxlPf3HBYBULUcwRstYQMOo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

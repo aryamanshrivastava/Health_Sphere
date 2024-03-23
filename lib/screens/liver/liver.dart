@@ -15,7 +15,7 @@ class Liver extends StatefulWidget {
 }
 
 class _LiverState extends State<Liver> {
-    ImagePicker imagePicker = ImagePicker();
+  ImagePicker imagePicker = ImagePicker();
   File? image;
   Future<void> pickImage(ImageSource source) async {
     final XFile? file = await imagePicker.pickImage(source: source);
@@ -31,13 +31,14 @@ class _LiverState extends State<Liver> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Choose an option", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+          title: Text("Choose an option",
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
                 title:
-                    Text("Upload from Gallery", style: TextStyle(fontSize: 20)),
+                    Text("Upload from Files", style: TextStyle(fontSize: 20)),
                 onTap: () {
                   Navigator.pop(context);
                   pickImage(ImageSource.gallery);
@@ -56,32 +57,34 @@ class _LiverState extends State<Liver> {
       },
     );
   }
+
   @override
   Widget build(BuildContext context) {
     double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
     return Scaffold(
-        backgroundColor: Color(0xff050B29),
+        backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Color(0xffB9FFB7),
+          backgroundColor: Colors.orange.shade500,
           title: Text('Liver', style: TextStyle(fontWeight: FontWeight.bold)),
           centerTitle: true,
         ),
         body: Padding(
             padding:
                 EdgeInsets.symmetric(horizontal: w * 0.06, vertical: h * 0.03),
-            child: Column(
-              children: [
-                 Row(
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GestureDetector(
                     onTap: () {
                       showOptionsDialog();
                     },
                     child: Container(
-                      width: w * 0.43,
+                      width: w * 0.4,
                       height: h * 0.25,
                       decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black, width: 1.0),
                         color: Colors.transparent,
                         borderRadius: BorderRadius.circular(h * 0.02),
                       ),
@@ -98,17 +101,17 @@ class _LiverState extends State<Liver> {
                               ),
                             ),
                           ),
-                          SizedBox(height: h * 0.01),
+                          SizedBox(height: h * 0.03),
                           Text('UPLOAD REPORT',
                               style: TextStyle(
                                   fontSize: h * 0.025,
-                                  color: Color(0xffffffff),
+                                  color: Color(0xff000000),
                                   fontWeight: FontWeight.bold)),
                         ],
                       ),
                     ),
                   ),
-                  SizedBox(width: w * 0.02),
+                  SizedBox(width: w * 0.07),
                   GestureDetector(
                     onTap: () {
                       Navigator.push(context,
@@ -117,9 +120,10 @@ class _LiverState extends State<Liver> {
                       }));
                     },
                     child: Container(
-                      width: w * 0.43,
+                      width: w * 0.4,
                       height: h * 0.25,
                       decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black, width: 1.0),
                         color: Colors.transparent,
                         borderRadius: BorderRadius.circular(h * 0.02),
                       ),
@@ -136,11 +140,11 @@ class _LiverState extends State<Liver> {
                               ),
                             ),
                           ),
-                          SizedBox(height: h * 0.01),
+                          SizedBox(height: h * 0.03),
                           Text('MANUAL ENTRY',
                               style: TextStyle(
                                   fontSize: h * 0.025,
-                                  color: Color(0xffffffff),
+                                  color: Color(0xff000000),
                                   fontWeight: FontWeight.bold)),
                         ],
                       ),
@@ -148,8 +152,6 @@ class _LiverState extends State<Liver> {
                   ),
                 ],
               ),
-              ],
             )));
   }
 }
- 

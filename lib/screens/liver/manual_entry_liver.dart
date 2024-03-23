@@ -46,9 +46,9 @@ class ManualEntryLiverState extends State<ManualEntryLiver> {
     final double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: const Color(0xff050B29),
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: const Color(0xffB9FFB7),
+        backgroundColor: Colors.orange.shade500,
         title: const Text(
           'Manual Entry',
           style: TextStyle(fontWeight: FontWeight.bold),
@@ -115,10 +115,14 @@ class ManualEntryLiverState extends State<ManualEntryLiver> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xffB9FFB7),
+                    backgroundColor: Colors.orange.shade500,
                     minimumSize: Size(screenWidth * 0.9, screenHeight * 0.06),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
                   ),
-                  child: const Text('Submit'),
+                  child: const Text('Submit',
+                      style: TextStyle(fontSize: 28, color: Colors.white)),
                 ),
                 _sizedBox(screenHeight),
                 Center(
@@ -141,10 +145,10 @@ class ManualEntryLiverState extends State<ManualEntryLiver> {
   }) {
     return TextFormField(
       keyboardType: TextInputType.number,
-      style: const TextStyle(color: Colors.white),
+      style: const TextStyle(color: Colors.black),
       decoration: InputDecoration(
           labelText: labelText,
-          labelStyle: const TextStyle(color: Colors.white),
+          labelStyle: const TextStyle(color: Colors.black38),
           border: const OutlineInputBorder(),
           suffix: Column(
             children: [
@@ -156,7 +160,7 @@ class ManualEntryLiverState extends State<ManualEntryLiver> {
                 child: SizedBox(
                     height: 10,
                     width: 20,
-                    child: Icon(Icons.arrow_drop_up, color: Colors.white)),
+                    child: Icon(Icons.arrow_drop_up, color: Colors.black)),
               ),
               GestureDetector(
                 onTap: () {
@@ -166,7 +170,7 @@ class ManualEntryLiverState extends State<ManualEntryLiver> {
                 child: SizedBox(
                     height: 10,
                     width: 20,
-                    child: Icon(Icons.arrow_drop_down, color: Colors.white)),
+                    child: Icon(Icons.arrow_drop_down, color: Colors.black)),
               ),
             ],
           )),
