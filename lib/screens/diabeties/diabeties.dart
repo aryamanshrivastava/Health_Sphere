@@ -1,7 +1,9 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, avoid_print
 
+import 'dart:convert';
 import 'dart:io';
-
+import 'dart:typed_data';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:helath_sphere/screens/diabeties/manual_entry_diabeties.dart';
 import 'package:image_picker/image_picker.dart';
@@ -22,6 +24,75 @@ class _DiabetiesState extends State<Diabeties> {
       setState(() {
         image = File(file.path);
       });
+    }
+    showFinalDialog();
+  }
+
+  void showFinalDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+            title: Text("Image Uploaded Successfully,\nWait for the results!",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w800)),
+            content: Row(
+              children: [
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text("Cancel")),
+                Spacer(),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    sendData(2, image!.readAsBytesSync());
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return Scaffold();
+                    }));
+                  },
+                  child: Text("Proceed"),
+                ),
+              ],
+            ));
+      },
+    );
+  }
+
+  void sendData(int btnId, Uint8List imageBytes) async {
+    // Define the URL where you want to send the data
+    const url = 'https://example.com/sendData';
+
+    // Convert the image bytes to base64
+    String base64Image = base64Encode(imageBytes);
+    // Prepare the JSON payload
+    Map<String, dynamic> data = {
+      'btnId': btnId,
+      'image': base64Image,
+    };
+    print('$data');
+
+    // Convert the data to JSON format
+    String jsonData = jsonEncode(data);
+    try {
+      // Send a POST request with JSON data
+      final response = await http.post(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+        body: jsonData,
+      );
+      // Check the response status
+      if (response.statusCode == 200) {
+        print('Data sent successfully');
+      } else {
+        print('Failed to send data. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error sending data: $e');
     }
   }
 

@@ -48,7 +48,7 @@ class _LiverState extends State<Liver> {
                 ElevatedButton(
                   onPressed: () {
                     Navigator.pop(context);
-                    sendData('1', image!.readAsBytesSync());
+                    sendData(1, image!.readAsBytesSync());
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
                       return Scaffold();
@@ -62,7 +62,7 @@ class _LiverState extends State<Liver> {
     );
   }
 
-  void sendData(String btnId, Uint8List imageBytes) async {
+  void sendData(int btnId, Uint8List imageBytes) async {
     // Define the URL where you want to send the data
     const url = 'https://example.com/sendData';
 
