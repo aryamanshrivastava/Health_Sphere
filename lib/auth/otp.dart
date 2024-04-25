@@ -7,12 +7,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:helath_sphere/home.dart';
-import 'package:helath_sphere/userdata/userdata.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 
+import '../home.dart';
 import '../provider/provider.dart';
+import '../userdata/userdata.dart';
 
 class Otp extends StatefulWidget {
   final String verificationId;

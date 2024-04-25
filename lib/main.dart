@@ -1,10 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:helath_sphere/provider/provider.dart';
-import 'package:helath_sphere/splash.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
+import 'provider/provider.dart';
+import 'splash.dart';
 // import 'splash.dart';
 
 void main() async {

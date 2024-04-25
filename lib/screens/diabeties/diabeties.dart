@@ -1,12 +1,16 @@
 // ignore_for_file: prefer_const_constructors, avoid_print
 
 import 'dart:convert';
+import 'dart:io' as io;
 import 'dart:io';
-import 'dart:typed_data';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:helath_sphere/screens/diabeties/manual_entry_diabeties.dart';
 import 'package:image_picker/image_picker.dart';
+
+import 'manual_entry_diabeties.dart';
 
 class Diabeties extends StatefulWidget {
   const Diabeties({super.key});
@@ -16,19 +20,40 @@ class Diabeties extends StatefulWidget {
 }
 
 class _DiabetiesState extends State<Diabeties> {
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  String imageUrl = '';
   ImagePicker imagePicker = ImagePicker();
   File? image;
+  bool isImageLoaded = false;
   Future<void> pickImage(ImageSource source) async {
     final XFile? file = await imagePicker.pickImage(source: source);
+    print('${file?.path}');
     if (file != null) {
       setState(() {
         image = File(file.path);
+        isImageLoaded = true;
       });
+      String uniqueFileName = 'b.jpeg';
+      Reference referenceRoot = FirebaseStorage.instance.ref();
+      Reference referenceDirImages = referenceRoot.child('images');
+      Reference referenceImageToUpload =
+          referenceDirImages.child(uniqueFileName);
+      try {
+        await referenceImageToUpload.putFile(
+            io.File(file.path), SettableMetadata(contentType: "image/jpeg"));
+        imageUrl = await referenceImageToUpload.getDownloadURL();
+        setState(() {
+          isImageLoaded = false;
+        });
+        showFinalDialog(imageUrl);
+      } catch (error) {
+        print('Error uploading image: $error');
+      }
     }
-    showFinalDialog();
   }
 
-  void showFinalDialog() {
+  void showFinalDialog(String imageUrl) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -47,10 +72,10 @@ class _DiabetiesState extends State<Diabeties> {
                 ElevatedButton(
                   onPressed: () {
                     Navigator.pop(context);
-                    sendData(2, image!.readAsBytesSync());
+                    sendData(2, imageUrl);
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return Scaffold();
+                      return Scaffold(backgroundColor: Colors.yellow);
                     }));
                   },
                   child: Text("Proceed"),
@@ -61,23 +86,40 @@ class _DiabetiesState extends State<Diabeties> {
     );
   }
 
-  void sendData(int btnId, Uint8List imageBytes) async {
-    // Define the URL where you want to send the data
-    const url = 'https://example.com/sendData';
+  void sendData(int btnId, String imageUrl) async {
+    String url = 'http://192.168.56.1:5000/predict';
 
-    // Convert the image bytes to base64
-    String base64Image = base64Encode(imageBytes);
-    // Prepare the JSON payload
+    if (imageUrl.isEmpty) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Please upload an image')));
+      return;
+    }
     Map<String, dynamic> data = {
-      'btnId': btnId,
-      'image': base64Image,
+      'disease_value': btnId,
+      'image_url': imageUrl,
     };
     print('$data');
-
-    // Convert the data to JSON format
     String jsonData = jsonEncode(data);
+    User? currentUser = auth.currentUser;
+    if (currentUser != null) {
+      firestore.collection('users').doc(currentUser.uid).get().then((value) {
+        if (value.exists) {
+          return firestore
+              .collection('users')
+              .doc(currentUser.uid)
+              .update(data);
+        } else {
+          print('Document does not exist');
+          return null;
+        }
+      });
+    } else {
+      // No user is logged in, handle accordingly
+      print('No user currently logged in');
+      return null;
+    }
+
     try {
-      // Send a POST request with JSON data
       final response = await http.post(
         Uri.parse(url),
         headers: <String, String>{
@@ -85,9 +127,9 @@ class _DiabetiesState extends State<Diabeties> {
         },
         body: jsonData,
       );
-      // Check the response status
       if (response.statusCode == 200) {
         print('Data sent successfully');
+        print('Response: ${response.body}');
       } else {
         print('Failed to send data. Status code: ${response.statusCode}');
       }
@@ -140,89 +182,95 @@ class _DiabetiesState extends State<Diabeties> {
               Text('Diabeties', style: TextStyle(fontWeight: FontWeight.bold)),
           centerTitle: true,
         ),
-        body: Padding(
-            padding:
-                EdgeInsets.symmetric(horizontal: w * 0.06, vertical: h * 0.03),
-            child: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      showOptionsDialog();
-                    },
-                    child: Container(
-                      width: w * 0.4,
-                      height: h * 0.25,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black, width: 1.0),
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(h * 0.02),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: w * 0.2,
-                            height: h * 0.1,
+        body: Center(
+          child: isImageLoaded
+              ? CircularProgressIndicator()
+              : Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: w * 0.06, vertical: h * 0.03),
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            showOptionsDialog();
+                          },
+                          child: Container(
+                            width: w * 0.4,
+                            height: h * 0.25,
                             decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage('assets/upload.png'),
-                                fit: BoxFit.cover,
-                              ),
+                              border:
+                                  Border.all(color: Colors.black, width: 1.0),
+                              color: Colors.transparent,
+                              borderRadius: BorderRadius.circular(h * 0.02),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: w * 0.2,
+                                  height: h * 0.1,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage('assets/upload.png'),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: h * 0.03),
+                                Text('UPLOAD REPORT',
+                                    style: TextStyle(
+                                        fontSize: h * 0.025,
+                                        color: Color(0xff000000),
+                                        fontWeight: FontWeight.bold)),
+                              ],
                             ),
                           ),
-                          SizedBox(height: h * 0.03),
-                          Text('UPLOAD REPORT',
-                              style: TextStyle(
-                                  fontSize: h * 0.025,
-                                  color: Color(0xff000000),
-                                  fontWeight: FontWeight.bold)),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: w * 0.07),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return ManualEntryDiabetes();
-                      }));
-                    },
-                    child: Container(
-                      width: w * 0.4,
-                      height: h * 0.25,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black, width: 1.0),
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(h * 0.02),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: w * 0.2,
-                            height: h * 0.1,
+                        ),
+                        SizedBox(width: w * 0.07),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return ManualEntryDiabetes();
+                            }));
+                          },
+                          child: Container(
+                            width: w * 0.4,
+                            height: h * 0.25,
                             decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage('assets/manual.png'),
-                                fit: BoxFit.cover,
-                              ),
+                              border:
+                                  Border.all(color: Colors.black, width: 1.0),
+                              color: Colors.transparent,
+                              borderRadius: BorderRadius.circular(h * 0.02),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: w * 0.2,
+                                  height: h * 0.1,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage('assets/manual.png'),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: h * 0.03),
+                                Text('MANUAL ENTRY',
+                                    style: TextStyle(
+                                        fontSize: h * 0.025,
+                                        color: Color(0xff000000),
+                                        fontWeight: FontWeight.bold)),
+                              ],
                             ),
                           ),
-                          SizedBox(height: h * 0.03),
-                          Text('MANUAL ENTRY',
-                              style: TextStyle(
-                                  fontSize: h * 0.025,
-                                  color: Color(0xff000000),
-                                  fontWeight: FontWeight.bold)),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-            )));
+                  )),
+        ));
   }
 }

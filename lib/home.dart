@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_constructors, avoid_print
 import 'package:flutter/material.dart';
-import 'package:helath_sphere/screens/diabeties/diabeties.dart';
-import 'package:helath_sphere/screens/liver/liver.dart';
 
 import 'data/healthtips.dart';
+import 'screens/diabeties/diabeties.dart';
+import 'screens/liver/liver.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

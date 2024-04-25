@@ -21,8 +21,6 @@ class Liver extends StatefulWidget {
 class _LiverState extends State<Liver> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  // DocumentReference reference =
-  //     FirebaseFirestore.instance.collection('users').doc(auth.currentUser!.uid);
   String imageUrl = '';
   ImagePicker imagePicker = ImagePicker();
   File? image;

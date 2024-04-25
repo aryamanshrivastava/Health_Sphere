@@ -3,7 +3,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:helath_sphere/auth/phone.dart';
+
+import 'auth/phone.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
