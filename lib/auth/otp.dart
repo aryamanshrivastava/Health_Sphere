@@ -10,7 +10,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 
-import '../home.dart';
+import '../screens/home.dart';
 import '../provider/provider.dart';
 import '../userdata/userdata.dart';
 

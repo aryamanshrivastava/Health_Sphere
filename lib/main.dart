@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'provider/provider.dart';
-import 'splash.dart';
+import 'screens/splash.dart';
 // import 'splash.dart';
 
 void main() async {

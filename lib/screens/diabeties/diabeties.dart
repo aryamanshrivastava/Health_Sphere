@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, avoid_print
 
 import 'dart:convert';
-import 'dart:io' as io;
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,34 +21,35 @@ class Diabeties extends StatefulWidget {
 class _DiabetiesState extends State<Diabeties> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  String imageUrl = '';
   ImagePicker imagePicker = ImagePicker();
+  final String uniqueFileName = '${DateTime.now().millisecondsSinceEpoch}.jpeg';
+  String imageUrl = '';
   File? image;
   bool isImageLoaded = false;
   Future<void> pickImage(ImageSource source) async {
     final XFile? file = await imagePicker.pickImage(source: source);
-    print('${file?.path}');
     if (file != null) {
       setState(() {
         image = File(file.path);
         isImageLoaded = true;
       });
-      String uniqueFileName = 'b.jpeg';
-      Reference referenceRoot = FirebaseStorage.instance.ref();
-      Reference referenceDirImages = referenceRoot.child('images');
-      Reference referenceImageToUpload =
-          referenceDirImages.child(uniqueFileName);
-      try {
-        await referenceImageToUpload.putFile(
-            io.File(file.path), SettableMetadata(contentType: "image/jpeg"));
-        imageUrl = await referenceImageToUpload.getDownloadURL();
-        setState(() {
-          isImageLoaded = false;
-        });
-        showFinalDialog(imageUrl);
-      } catch (error) {
-        print('Error uploading image: $error');
-      }
+      uploadImage(file.path);
+    }
+  }
+
+  Future<void> uploadImage(String filePath) async {
+    Reference reference =
+        FirebaseStorage.instance.ref('images/$uniqueFileName');
+    try {
+      await reference.putFile(
+          File(filePath), SettableMetadata(contentType: 'image/jpeg'));
+      imageUrl = await reference.getDownloadURL();
+      setState(() {
+        isImageLoaded = false;
+      });
+      showFinalDialog(imageUrl);
+    } catch (e) {
+      print('Error uploading image: $e');
     }
   }
 
@@ -64,19 +64,17 @@ class _DiabetiesState extends State<Diabeties> {
             content: Row(
               children: [
                 ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
+                    onPressed: () => Navigator.pop(context),
                     child: Text("Cancel")),
                 Spacer(),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.pop(context);
                     sendData(2, imageUrl);
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return Scaffold(backgroundColor: Colors.yellow);
-                    }));
+                    // Navigator.push(context,
+                    //     MaterialPageRoute(builder: (context) {
+                    //   return Scaffold(backgroundColor: Colors.yellow);
+                    // }));
                   },
                   child: Text("Proceed"),
                 ),
@@ -87,8 +85,6 @@ class _DiabetiesState extends State<Diabeties> {
   }
 
   void sendData(int btnId, String imageUrl) async {
-    String url = 'http://192.168.56.1:5000/predict';
-
     if (imageUrl.isEmpty) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('Please upload an image')));
@@ -99,39 +95,37 @@ class _DiabetiesState extends State<Diabeties> {
       'image_url': imageUrl,
     };
     print('$data');
-    String jsonData = jsonEncode(data);
-    User? currentUser = auth.currentUser;
-    if (currentUser != null) {
-      firestore.collection('users').doc(currentUser.uid).get().then((value) {
-        if (value.exists) {
-          return firestore
-              .collection('users')
-              .doc(currentUser.uid)
-              .update(data);
-        } else {
-          print('Document does not exist');
-          return null;
-        }
-      });
-    } else {
-      // No user is logged in, handle accordingly
-      print('No user currently logged in');
-      return null;
-    }
-
     try {
       final response = await http.post(
-        Uri.parse(url),
+        Uri.parse('http://10.100.167.73:5000/predict'),
         headers: <String, String>{
           'Content-Type': 'application/json',
         },
-        body: jsonData,
+        body: jsonEncode(data),
       );
       if (response.statusCode == 200) {
         print('Data sent successfully');
         print('Response: ${response.body}');
       } else {
         print('Failed to send data. Status code: ${response.statusCode}');
+      }
+      User? currentUser = auth.currentUser;
+      if (currentUser != null) {
+        firestore.collection('users').doc(currentUser.uid).get().then((value) {
+          if (value.exists) {
+            return firestore
+                .collection('users')
+                .doc(currentUser.uid)
+                .update(data);
+          } else {
+            print('Document does not exist');
+            return null;
+          }
+        });
+      } else {
+        // No user is logged in, handle accordingly
+        print('No user currently logged in');
+        return null;
       }
     } catch (e) {
       print('Error sending data: $e');
@@ -149,20 +143,18 @@ class _DiabetiesState extends State<Diabeties> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                title:
-                    Text("Upload from Gallery", style: TextStyle(fontSize: 20)),
-                onTap: () {
-                  Navigator.pop(context);
-                  pickImage(ImageSource.gallery);
-                },
-              ),
+                  title: Text("Upload from Gallery",
+                      style: TextStyle(fontSize: 20)),
+                  onTap: () {
+                    Navigator.pop(context);
+                    pickImage(ImageSource.gallery);
+                  }),
               ListTile(
-                title: Text("Use Camera", style: TextStyle(fontSize: 20)),
-                onTap: () {
-                  Navigator.pop(context);
-                  pickImage(ImageSource.camera);
-                },
-              ),
+                  title: Text("Use Camera", style: TextStyle(fontSize: 20)),
+                  onTap: () {
+                    Navigator.pop(context);
+                    pickImage(ImageSource.camera);
+                  }),
             ],
           ),
         );
@@ -192,85 +184,55 @@ class _DiabetiesState extends State<Diabeties> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        GestureDetector(
-                          onTap: () {
-                            showOptionsDialog();
-                          },
-                          child: Container(
-                            width: w * 0.4,
-                            height: h * 0.25,
-                            decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: Colors.black, width: 1.0),
-                              color: Colors.transparent,
-                              borderRadius: BorderRadius.circular(h * 0.02),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  width: w * 0.2,
-                                  height: h * 0.1,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: AssetImage('assets/upload.png'),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(height: h * 0.03),
-                                Text('UPLOAD REPORT',
-                                    style: TextStyle(
-                                        fontSize: h * 0.025,
-                                        color: Color(0xff000000),
-                                        fontWeight: FontWeight.bold)),
-                              ],
-                            ),
-                          ),
-                        ),
+                        optionCard(h, w, 'UPLOAD IMAGE', 'assets/upload.png',
+                            () {
+                          showOptionsDialog();
+                        }),
                         SizedBox(width: w * 0.07),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return ManualEntryDiabetes();
-                            }));
-                          },
-                          child: Container(
-                            width: w * 0.4,
-                            height: h * 0.25,
-                            decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: Colors.black, width: 1.0),
-                              color: Colors.transparent,
-                              borderRadius: BorderRadius.circular(h * 0.02),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  width: w * 0.2,
-                                  height: h * 0.1,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: AssetImage('assets/manual.png'),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(height: h * 0.03),
-                                Text('MANUAL ENTRY',
-                                    style: TextStyle(
-                                        fontSize: h * 0.025,
-                                        color: Color(0xff000000),
-                                        fontWeight: FontWeight.bold)),
-                              ],
-                            ),
-                          ),
-                        ),
+                        optionCard(h, w, 'MANULA ENTRY', 'assets/manual.png',
+                            () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return ManualEntryDiabetes();
+                          }));
+                        }),
                       ],
                     ),
                   )),
         ));
+  }
+
+  Widget optionCard(
+      double h, double w, String text, String imagePath, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: w * 0.4,
+        height: h * 0.25,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black, width: 1.0),
+          borderRadius: BorderRadius.circular(h * 0.02),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: w * 0.2,
+              height: h * 0.1,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(imagePath),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            SizedBox(height: h * 0.03),
+            Text(text,
+                style: TextStyle(
+                    fontSize: h * 0.025, fontWeight: FontWeight.bold)),
+          ],
+        ),
+      ),
+    );
   }
 }

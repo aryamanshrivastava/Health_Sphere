@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-import '../home.dart';
+import '../screens/home.dart';
 
 class UserData extends StatefulWidget {
   const UserData({super.key});
