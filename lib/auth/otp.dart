@@ -66,10 +66,10 @@ class _OtpState extends State<Otp> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           centerTitle: true,
-          title: Text(
-            'Enter OTP',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
+          // title: Text(
+          //   'Enter OTP',
+          //   style: TextStyle(fontWeight: FontWeight.bold),
+          // ),
           leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
@@ -85,11 +85,26 @@ class _OtpState extends State<Otp> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Check your Phone for the One time password',
+                'Please Enter the One Time Password Received on your Phone',
+                textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: h * 0.02,
                     color: Colors.black,
                     fontWeight: FontWeight.w500),
+              ),
+              SizedBox(
+                height: h * 0.03,
+              ),
+              Container(
+                alignment: Alignment.center,
+                child: Image.asset(
+                  'assets/password.png',
+                  width: w * 0.5,
+                  height: h * 0.2,
+                ),
+              ),
+              SizedBox(
+                height: h * 0.03,
               ),
               SizedBox(
                 height: h * 0.03,

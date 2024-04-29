@@ -11,6 +11,8 @@ class ManualEntryLiver extends StatefulWidget {
 
 class ManualEntryLiverState extends State<ManualEntryLiver> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final TextEditingController ageController = TextEditingController();
+  final TextEditingController genderController = TextEditingController();
   final TextEditingController totalBilirubinController =
       TextEditingController();
   final TextEditingController directBilirubinController =
@@ -19,6 +21,8 @@ class ManualEntryLiverState extends State<ManualEntryLiver> {
       TextEditingController();
   final TextEditingController alamineAminotransferaseController =
       TextEditingController();
+  final TextEditingController aspartateAminotransferaseController =
+      TextEditingController();
   final TextEditingController totalProteinController = TextEditingController();
   final TextEditingController albuminController = TextEditingController();
   final TextEditingController albuminAndGlobulinRatioController =
@@ -26,10 +30,13 @@ class ManualEntryLiverState extends State<ManualEntryLiver> {
 
   @override
   void dispose() {
+    ageController.dispose();
+    genderController.dispose();
     totalBilirubinController.dispose();
     directBilirubinController.dispose();
     alkalinePhosphataseController.dispose();
     alamineAminotransferaseController.dispose();
+    aspartateAminotransferaseController.dispose();
     totalProteinController.dispose();
     albuminController.dispose();
     albuminAndGlobulinRatioController.dispose();
@@ -37,7 +44,18 @@ class ManualEntryLiverState extends State<ManualEntryLiver> {
   }
 
   String getConcatenatedValues() {
-    return '[${totalBilirubinController.text}, ${directBilirubinController.text}, ${alkalinePhosphataseController.text}, ${alamineAminotransferaseController.text}, ${totalProteinController.text}, ${albuminController.text}, ${albuminAndGlobulinRatioController.text}]';
+    return [
+      ageController.text,
+      genderController.text,
+      totalBilirubinController.text,
+      directBilirubinController.text,
+      alkalinePhosphataseController.text,
+      alamineAminotransferaseController.text,
+      aspartateAminotransferaseController.text,
+      totalProteinController.text,
+      albuminController.text,
+      albuminAndGlobulinRatioController.text,
+    ].join(', ');
   }
 
   @override
@@ -48,7 +66,7 @@ class ManualEntryLiverState extends State<ManualEntryLiver> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.orange.shade500,
+        backgroundColor: Colors.white,
         title: const Text(
           'Manual Entry',
           style: TextStyle(fontWeight: FontWeight.bold),
@@ -63,6 +81,28 @@ class ManualEntryLiverState extends State<ManualEntryLiver> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                // SizedBox(
+                //   height: screenHeight * 0.02,
+                // ),
+                // Text(
+                //   "Manual Entry",
+                //   style: TextStyle(
+                //       fontWeight: FontWeight.bold,
+                //       fontSize: screenHeight * 0.04),
+                // ),
+                // SizedBox(
+                //   height: screenHeight * 0.03,
+                // ),
+                _buildTextFormField(
+                  labelText: 'Age',
+                  controller: ageController,
+                ),
+                _sizedBox(screenHeight),
+                _buildTextFormField(
+                  labelText: 'Gender [Male : 0, Female : 1]',
+                  controller: genderController,
+                ),
+                _sizedBox(screenHeight),
                 _buildTextFormField(
                   labelText: 'Total Bilirubin (mg/dL)',
                   controller: totalBilirubinController,
@@ -74,12 +114,17 @@ class ManualEntryLiverState extends State<ManualEntryLiver> {
                 ),
                 _sizedBox(screenHeight),
                 _buildTextFormField(
-                  labelText: 'Alkaline Phosphatase (IU/L)',
+                  labelText: 'Alkaline Phosphatase (ALP) (IU/L)',
                   controller: alkalinePhosphataseController,
                 ),
                 _sizedBox(screenHeight),
                 _buildTextFormField(
-                  labelText: 'Alamine Aminotransferase (IU/L)',
+                  labelText: 'Alanine Aminotransferase (SGPT/ALT) (IU/L)',
+                  controller: alamineAminotransferaseController,
+                ),
+                _sizedBox(screenHeight),
+                _buildTextFormField(
+                  labelText: 'Aspartate Aminotransferase (SGOT/AST) (IU/L)',
                   controller: alamineAminotransferaseController,
                 ),
                 _sizedBox(screenHeight),
@@ -104,10 +149,13 @@ class ManualEntryLiverState extends State<ManualEntryLiver> {
                       formKey.currentState!.save();
                       // Print the values in an array format
                       print([
+                        ageController.text,
+                        genderController.text,
                         totalBilirubinController.text,
                         directBilirubinController.text,
                         alkalinePhosphataseController.text,
                         alamineAminotransferaseController.text,
+                        aspartateAminotransferaseController.text,
                         totalProteinController.text,
                         albuminController.text,
                         albuminAndGlobulinRatioController.text,
@@ -115,7 +163,7 @@ class ManualEntryLiverState extends State<ManualEntryLiver> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange.shade500,
+                    backgroundColor: Color(0xFFEF3D49),
                     minimumSize: Size(screenWidth * 0.9, screenHeight * 0.06),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.0),
@@ -149,7 +197,9 @@ class ManualEntryLiverState extends State<ManualEntryLiver> {
       decoration: InputDecoration(
           labelText: labelText,
           labelStyle: const TextStyle(color: Colors.black38),
-          border: const OutlineInputBorder(),
+          border: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          ),
           suffix: Column(
             children: [
               GestureDetector(

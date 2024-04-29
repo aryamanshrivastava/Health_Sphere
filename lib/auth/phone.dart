@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import '../provider/provider.dart';
 import 'otp.dart';
 
@@ -42,7 +42,15 @@ class _PhoneAuthState extends State<PhoneAuth> {
                 ),
               ),
               SizedBox(
-                height: h * 0.04,
+                height: h * 0.02,
+              ),
+              Container(
+                alignment: Alignment.center,
+                child: Image.asset(
+                  'assets/doc_pat.png',
+                  width: w * 0.5, // Adjust width as needed
+                  height: h * 0.2, // Adjust height as needed
+                ),
               ),
               Text(
                 'Phone',
@@ -94,7 +102,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
                       },
                       style: ElevatedButton.styleFrom(
                         minimumSize: Size(w * 0.9, h * 0.06),
-                        backgroundColor: Colors.orange.shade500,
+                        backgroundColor: Color(0xFFEF3D49),
                         foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(h * 0.01),
@@ -128,7 +136,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
         builder: (context) {
           return Center(
             child: SpinKitThreeInOut(
-              color: Color(0xffC471ED),
+              color: Color(0xFFEF3D49),
               size: 50.0,
             ),
           );
@@ -151,6 +159,8 @@ class _PhoneAuthState extends State<PhoneAuth> {
     final authService = Provider.of<AuthService>(context, listen: false);
     try {
       await authService.signInWithCredential(credential);
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('isLoggedIn', true);
       Navigator.of(context).pushReplacementNamed('/home');
     } catch (e) {
       Navigator.of(context, rootNavigator: true).pop();

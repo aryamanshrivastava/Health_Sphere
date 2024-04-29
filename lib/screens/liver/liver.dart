@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, avoid_print
+// ignore_for_file: prefer_const_constructors, avoid_print, use_build_context_synchronously
 
 import 'dart:convert';
 import 'dart:io';
@@ -103,8 +103,12 @@ class _LiverState extends State<Liver> {
         body: jsonEncode(data),
       );
       if (response.statusCode == 200) {
-        print('Data sent successfully');
-        print('Response: ${response.body}');
+        // print('Response: ${response.body}');
+        // if (response.body == '1') {
+        //   Navigator.pushNamed(context, '/liver_result_positive');
+        // } else {
+        //   Navigator.pushNamed(context, '/liver_result_negative');
+        // }
       } else {
         print('Failed to send data. Status code: ${response.statusCode}');
       }
@@ -143,7 +147,7 @@ class _LiverState extends State<Liver> {
             children: [
               ListTile(
                 title:
-                    Text("Upload from Files", style: TextStyle(fontSize: 20)),
+                    Text("Upload from Device", style: TextStyle(fontSize: 20)),
                 onTap: () {
                   Navigator.pop(context);
                   pickImage(ImageSource.gallery);
@@ -170,32 +174,63 @@ class _LiverState extends State<Liver> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.orange.shade500,
-          title: Text('Liver', style: TextStyle(fontWeight: FontWeight.bold)),
-          centerTitle: true,
-        ),
+            // backgroundColor: Colors.orange.shade500,
+            // title: Text('Liver', style: TextStyle(fontWeight: FontWeight.bold)),
+            // centerTitle: true,
+            ),
         body: Center(
           child: isImageLoaded
-              ? CircularProgressIndicator()
+              ? Center(
+                  child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    CircularProgressIndicator(),
+                    Text('Uploading Image...'),
+                  ],
+                ))
               : Padding(
                   padding: EdgeInsets.symmetric(
                       horizontal: w * 0.06, vertical: h * 0.03),
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        optionCard(h, w, 'UPLOAD IMAGE', 'assets/upload.png',
-                            showOptionsDialog),
-                        SizedBox(width: w * 0.07),
-                        optionCard(h, w, 'MANUAL ENTRY', 'assets/manual.png',
-                            () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return ManualEntryLiver();
-                          }));
-                        }),
-                      ],
-                    ),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: h * 0.075,
+                      ),
+                      Text(
+                        "Liver",
+                        style: TextStyle(
+                            color: Color(0xFFEF3D49),
+                            fontWeight: FontWeight.bold,
+                            fontSize: w * 0.10),
+                      ),
+                      SizedBox(height: h * 0.03),
+                      Text(
+                        "Got your liver function test report. Here choose any option to get the results.",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: h * 0.025, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        height: h * 0.03,
+                      ),
+                      Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            optionCard(h, w, 'UPLOAD REPORT',
+                                'assets/upload.png', showOptionsDialog),
+                            SizedBox(width: w * 0.07),
+                            optionCard(
+                                h, w, 'MANUAL ENTRY', 'assets/manual.png', () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return ManualEntryLiver();
+                              }));
+                            }),
+                          ],
+                        ),
+                      )
+                    ],
                   )),
         ));
   }

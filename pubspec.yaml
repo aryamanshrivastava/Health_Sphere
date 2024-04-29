@@ -44,6 +44,7 @@ dependencies:
   http:
   flutter_spinkit:
   flutter_image_compress:
+  shared_preferences:
 
 dev_dependencies:
   flutter_test:

@@ -2,6 +2,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService extends ChangeNotifier {
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -27,6 +28,8 @@ class AuthService extends ChangeNotifier {
   Future<User?> signInWithCredential(AuthCredential credential) async {
     try {
       final userCredential = await auth.signInWithCredential(credential);
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('isLoggedIn', true);
       return userCredential.user;
     } catch (error) {
       print("Error signing in with credential: $error");
@@ -46,5 +49,14 @@ class AuthService extends ChangeNotifier {
       codeSent: codeSent,
       codeAutoRetrievalTimeout: (String verificationId) {},
     );
+  }
+
+  Future<void> logout() async {
+    await FirebaseAuth.instance.signOut(); // Firebase sign out
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(
+        'isLoggedIn', false); // Reset the SharedPreferences flag
+    // Navigator.of(context)
+    //     .pushReplacementNamed('/login'); // Navigate to login screen
   }
 }

@@ -104,8 +104,8 @@ class _DiabetiesState extends State<Diabeties> {
         body: jsonEncode(data),
       );
       if (response.statusCode == 200) {
-        print('Data sent successfully');
-        print('Response: ${response.body}');
+        // print('Data sent successfully');
+        // print('Response: ${response.body}');
       } else {
         print('Failed to send data. Status code: ${response.statusCode}');
       }
@@ -143,7 +143,7 @@ class _DiabetiesState extends State<Diabeties> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                  title: Text("Upload from Gallery",
+                  title: Text("Upload from Device",
                       style: TextStyle(fontSize: 20)),
                   onTap: () {
                     Navigator.pop(context);
@@ -169,35 +169,66 @@ class _DiabetiesState extends State<Diabeties> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.orange.shade500,
-          title:
-              Text('Diabeties', style: TextStyle(fontWeight: FontWeight.bold)),
-          centerTitle: true,
-        ),
+            // backgroundColor: Colors.orange.shade500,
+            // title:
+            //     Text('Diabeties', style: TextStyle(fontWeight: FontWeight.bold)),
+            // centerTitle: true,
+            ),
         body: Center(
           child: isImageLoaded
-              ? CircularProgressIndicator()
+              ? Center(
+                  child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    CircularProgressIndicator(),
+                    Text('Uploading Image...'),
+                  ],
+                ))
               : Padding(
                   padding: EdgeInsets.symmetric(
                       horizontal: w * 0.06, vertical: h * 0.03),
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        optionCard(h, w, 'UPLOAD IMAGE', 'assets/upload.png',
-                            () {
-                          showOptionsDialog();
-                        }),
-                        SizedBox(width: w * 0.07),
-                        optionCard(h, w, 'MANULA ENTRY', 'assets/manual.png',
-                            () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return ManualEntryDiabetes();
-                          }));
-                        }),
-                      ],
-                    ),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: h * 0.075,
+                      ),
+                      Text(
+                        "Diabetes",
+                        style: TextStyle(
+                            color: Color(0xFFEF3D49),
+                            fontWeight: FontWeight.bold,
+                            fontSize: w * 0.10),
+                      ),
+                      SizedBox(height: h * 0.03),
+                      Text(
+                        "Got your diabetes test report. Here choose any option to get the results.",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: h * 0.025, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        height: h * 0.03,
+                      ),
+                      Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            optionCard(
+                                h, w, 'UPLOAD REPORT', 'assets/upload.png', () {
+                              showOptionsDialog();
+                            }),
+                            SizedBox(width: w * 0.07),
+                            optionCard(
+                                h, w, 'MANULA ENTRY', 'assets/manual.png', () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return ManualEntryDiabetes();
+                              }));
+                            }),
+                          ],
+                        ),
+                      ),
+                    ],
                   )),
         ));
   }

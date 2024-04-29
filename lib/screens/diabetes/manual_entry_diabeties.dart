@@ -48,7 +48,7 @@ class ManualEntryDiabetesState extends State<ManualEntryDiabetes> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.orange.shade500,
+        backgroundColor: Colors.white,
         title: const Text(
           'Manual Entry',
           style: TextStyle(fontWeight: FontWeight.bold),
@@ -74,21 +74,6 @@ class ManualEntryDiabetesState extends State<ManualEntryDiabetes> {
                 ),
                 _sizedBox(screenHeight),
                 _buildTextFormField(
-                  labelText: 'Blood Pressure (mm Hg)',
-                  controller: bloodPressureController,
-                ),
-                _sizedBox(screenHeight),
-                _buildTextFormField(
-                  labelText: 'Skin Thickness (mm)',
-                  controller: skinThicknessController,
-                ),
-                _sizedBox(screenHeight),
-                _buildTextFormField(
-                  labelText: 'Insulin Level (mu U/ml)',
-                  controller: insulinController,
-                ),
-                _sizedBox(screenHeight),
-                _buildTextFormField(
                   labelText: 'Body Mass Index (BMI)',
                   controller: bmiController,
                 ),
@@ -99,8 +84,7 @@ class ManualEntryDiabetesState extends State<ManualEntryDiabetes> {
                 ),
                 _sizedBox(screenHeight),
                 _buildTextFormField(
-                    labelText: 'Patient Age in Years',
-                    controller: ageController),
+                    labelText: 'Age', controller: ageController),
                 _sizedBox(screenHeight),
                 ElevatedButton(
                   onPressed: () {
@@ -108,19 +92,16 @@ class ManualEntryDiabetesState extends State<ManualEntryDiabetes> {
                       formKey.currentState!.save();
                       // Print the values in an array format
                       print([
-                        pregnanciesController.text,
-                        glucoseController.text,
-                        bloodPressureController.text,
-                        skinThicknessController.text,
-                        insulinController.text,
-                        bmiController.text,
                         diabetesPedigreeController.text,
+                        bmiController.text,
+                        pregnanciesController.text,
                         ageController.text,
+                        glucoseController.text
                       ]);
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange.shade500,
+                    backgroundColor: Color(0xFFEF3D49),
                     minimumSize: Size(screenWidth * 0.9, screenHeight * 0.06),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.0),
@@ -154,7 +135,9 @@ class ManualEntryDiabetesState extends State<ManualEntryDiabetes> {
       decoration: InputDecoration(
         labelText: labelText,
         labelStyle: const TextStyle(color: Colors.black38),
-        border: const OutlineInputBorder(),
+        border: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+        ),
         suffix: Column(
           children: [
             GestureDetector(

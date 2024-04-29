@@ -1,10 +1,12 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../auth/phone.dart';
+import 'home.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -17,10 +19,19 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(
-        Duration(seconds: 3),
-        () => Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => PhoneAuth())));
+    Timer(Duration(seconds: 3), checkLoginStatus);
+  }
+
+  Future<void> checkLoginStatus() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+    if (isLoggedIn) {
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => HomeScreen()));
+    } else {
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => PhoneAuth()));
+    }
   }
 
   @override
@@ -32,13 +43,14 @@ class _SplashScreenState extends State<SplashScreen> {
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image(image: AssetImage('assets/logo.png')),
+            Image(image: AssetImage('assets/logo_1.png')),
             SizedBox(height: h * 0.02),
             Text('HealthSphere',
                 style: TextStyle(
                     fontSize: h * 0.04,
+                    color: Color(0xFFEF3D49),
                     fontWeight: FontWeight.bold,
-                    color: Colors.orange.shade500)),
+                    )),
           ],
         )));
   }
