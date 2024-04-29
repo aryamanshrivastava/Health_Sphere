@@ -1,4 +1,6 @@
 // ignore_for_file: prefer_const_constructors, avoid_print
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../data/healthtips.dart';
@@ -12,6 +14,48 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  late User? currentUser;
+  late String uid;
+  String userName = ""; // Define a variable to hold the user's name
+
+  @override
+  void initState() {
+    super.initState();
+    currentUser = _auth.currentUser;
+    if (currentUser != null) {
+      uid = currentUser!.uid;
+      fetchUserData(uid).then((DocumentSnapshot userData) {
+        if (userData.exists && userData.data() != null) {
+          // Access user data from the snapshot and update the UI
+          setState(() {
+            // Example of accessing user name and updating UI
+            userName = userData['name'];
+          });
+        }
+      });
+    } else {
+      CircularProgressIndicator();
+    }
+  }
+
+  Future<DocumentSnapshot> fetchUserData(String uid) async {
+    try {
+      // Get reference to the user document using the provided UID
+      DocumentReference userRef =
+          FirebaseFirestore.instance.collection('users').doc(uid);
+
+      // Fetch the user document
+      DocumentSnapshot userSnapshot = await userRef.get();
+
+      return userSnapshot;
+    } catch (error) {
+      // Handle any errors that occur
+      print("Error fetching user data: $error");
+      return Future.error(error.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     double h = MediaQuery.of(context).size.height;
@@ -19,12 +63,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        // appBar: AppBar(
-        //   backgroundColor: Colors.orange.shade500,
-        //   title: Text('HealthSphere',
-        //       style: TextStyle(fontWeight: FontWeight.bold)),
-        //   centerTitle: true,
-        // ),
         body: Padding(
           padding:
               EdgeInsets.symmetric(horizontal: w * 0.04, vertical: h * 0.03),
@@ -43,13 +81,17 @@ class _HomeScreenState extends State<HomeScreen> {
                         fontSize: h * 0.025),
                   ),
                   SizedBox(width: w * 0.015),
-                  Text(
-                    "Avik,",
-                    style: TextStyle(
-                        color: Color(0xFF000000),
-                        fontWeight: FontWeight.bold,
-                        fontSize: h * 0.025),
-                  ),
+                  userName.isEmpty
+                      ? CircularProgressIndicator(
+                          color: Colors.white,
+                        )
+                      : Text(
+                          '$userName,',
+                          style: TextStyle(
+                              color: Color(0xFF000000),
+                              fontWeight: FontWeight.bold,
+                              fontSize: h * 0.025),
+                        ),
                 ],
               ),
               Text(
@@ -57,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: TextStyle(
                     fontSize: h * 0.025,
                     color: Color(0xFF000000),
-                    fontWeight: FontWeight.bold),
+                    fontWeight: FontWeight.w500),
                 textAlign: TextAlign.left,
               ),
               SizedBox(
