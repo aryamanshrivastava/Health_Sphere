@@ -48,12 +48,13 @@ class ManualEntryDiabetesState extends State<ManualEntryDiabetes> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xFFEF3D49),
         title: const Text(
           'Manual Entry',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
         centerTitle: true,
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Form(
         key: formKey,
@@ -108,7 +109,7 @@ class ManualEntryDiabetesState extends State<ManualEntryDiabetes> {
                     ),
                   ),
                   child: const Text('Submit',
-                      style: TextStyle(color: Colors.white, fontSize: 28)),
+                      style: TextStyle(color: Colors.white, fontSize: 24)),
                 ),
                 _sizedBox(screenHeight),
                 Center(

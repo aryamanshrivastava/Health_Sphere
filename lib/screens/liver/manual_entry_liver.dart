@@ -66,12 +66,13 @@ class ManualEntryLiverState extends State<ManualEntryLiver> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xFFEF3d49),
         title: const Text(
           'Manual Entry',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
         centerTitle: true,
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Form(
         key: formKey,
@@ -170,7 +171,7 @@ class ManualEntryLiverState extends State<ManualEntryLiver> {
                     ),
                   ),
                   child: const Text('Submit',
-                      style: TextStyle(fontSize: 28, color: Colors.white)),
+                      style: TextStyle(fontSize: 24, color: Colors.white)),
                 ),
                 _sizedBox(screenHeight),
                 Center(
