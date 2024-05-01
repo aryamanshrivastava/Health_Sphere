@@ -169,7 +169,7 @@ class _DiabetiesState extends State<Diabeties> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-            // backgroundColor: Colors.orange.shade500,
+            backgroundColor:  Colors.white,
             // title:
             //     Text('Diabeties', style: TextStyle(fontWeight: FontWeight.bold)),
             // centerTitle: true,
@@ -189,9 +189,6 @@ class _DiabetiesState extends State<Diabeties> {
                       horizontal: w * 0.06, vertical: h * 0.03),
                   child: Column(
                     children: [
-                      SizedBox(
-                        height: h * 0.075,
-                      ),
                       Text(
                         "Diabetes",
                         style: TextStyle(
@@ -201,25 +198,40 @@ class _DiabetiesState extends State<Diabeties> {
                       ),
                       SizedBox(height: h * 0.03),
                       Text(
-                        "Got your diabetes test report. Here choose any option to get the results.",
-                        textAlign: TextAlign.center,
+                        "Got your diabetes test report. \nHere choose any option to get the results.",
+                        textAlign: TextAlign.left,
                         style: TextStyle(
                             fontSize: h * 0.025, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(
                         height: h * 0.03,
                       ),
-                      Center(
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black, width: 0.5),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.white,
+                              spreadRadius: 0.75,
+                              blurRadius: 2.5,
+                              blurStyle: BlurStyle.inner,
+                              offset: Offset(-1, 0),
+                            ),
+                          ] ,
+                          borderRadius: BorderRadius.circular(h * 0.03),
+                           color: Color(0xFFEF3D49),
+                        ),
+                        padding: EdgeInsets.all(16),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             optionCard(
-                                h, w, 'UPLOAD REPORT', 'assets/upload.png', () {
+                                h, w, 'Upload\nReport', 'assets/upload.png', () {
                               showOptionsDialog();
                             }),
                             SizedBox(width: w * 0.07),
                             optionCard(
-                                h, w, 'MANULA ENTRY', 'assets/manual.png', () {
+                                h, w, 'Manual\nEntry', 'assets/manual.png', () {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
                                 return ManualEntryDiabetes();
@@ -238,9 +250,19 @@ class _DiabetiesState extends State<Diabeties> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: w * 0.4,
-        height: h * 0.25,
+        width: w * 0.35,
+        height: h * 0.24,
         decoration: BoxDecoration(
+          boxShadow: const [
+                    BoxShadow(
+                      color: Color(0xFFef3d49),
+                      spreadRadius: 0.75,
+                      blurRadius: 2.5,
+                      blurStyle: BlurStyle.inner,
+                      offset: Offset(-1, 0),
+                    ),
+          ],
+          color: Colors.white,
           border: Border.all(color: Colors.black, width: 1.0),
           borderRadius: BorderRadius.circular(h * 0.02),
         ),
@@ -259,6 +281,7 @@ class _DiabetiesState extends State<Diabeties> {
             ),
             SizedBox(height: h * 0.03),
             Text(text,
+                textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: h * 0.025, fontWeight: FontWeight.bold)),
           ],

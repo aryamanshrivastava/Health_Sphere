@@ -28,7 +28,7 @@ class Otp extends StatefulWidget {
 class _OtpState extends State<Otp> {
   String? otp;
   String? verificationId;
-  int resendTime = 60;
+  int resendTime = 600;
   late Timer countdownTimer;
   @override
   void initState() {
@@ -66,10 +66,6 @@ class _OtpState extends State<Otp> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           centerTitle: true,
-          // title: Text(
-          //   'Enter OTP',
-          //   style: TextStyle(fontWeight: FontWeight.bold),
-          // ),
           leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
@@ -80,17 +76,29 @@ class _OtpState extends State<Otp> {
         body: Padding(
           padding:
               EdgeInsets.symmetric(horizontal: w * 0.05, vertical: h * 0.03),
-          child: Column(
+          child: SingleChildScrollView(
+            child:  Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                'Please Enter the One Time Password Received on your Phone',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: h * 0.02,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500),
+              SizedBox(
+                height: h * 0.03,
+              ),
+              SizedBox(
+                width: w,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Please enter the One Time Password received on your phone number.',
+                      style: TextStyle(
+                          fontSize: h * 0.022,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
               ),
               SizedBox(
                 height: h * 0.03,
@@ -104,24 +112,21 @@ class _OtpState extends State<Otp> {
                 ),
               ),
               SizedBox(
-                height: h * 0.03,
-              ),
-              SizedBox(
-                height: h * 0.03,
+                height: h * 0.06,
               ),
               Center(
                 child: Pinput(
                   length: 6,
                   showCursor: true,
                   defaultPinTheme: PinTheme(
-                      width: w * 0.11,
-                      height: h * 0.06,
+                      width: w * 0.20,
+                      height: h * 0.07,
                       decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
+                        border: Border.all(color: Color(0xFF282828)),
                         borderRadius: BorderRadius.circular(h * 0.01),
                       ),
                       textStyle: TextStyle(
-                          color: Colors.black,
+                          color: Color(0xFF282828),
                           fontSize: h * 0.02,
                           fontWeight: FontWeight.w600)),
                   onCompleted: (value) {
@@ -140,12 +145,12 @@ class _OtpState extends State<Otp> {
                     submitOtp();
                   },
                   style: ElevatedButton.styleFrom(
-                    minimumSize: Size(w * 0.9, h * 0.06),
-                    backgroundColor: Colors.orange.shade500,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(h * 0.01),
-                    ),
+                        minimumSize: Size(w * 0.9, h * 0.06),
+                        backgroundColor: Color(0xFFEF3D49),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(h * 0.01),
+                        ),
                   ),
                   child: Text('Continue',
                       style:
@@ -188,7 +193,7 @@ class _OtpState extends State<Otp> {
           ),
         ),
       ),
-    );
+    ),);
   }
 
   Future<void> submitOtp() async {
@@ -199,7 +204,7 @@ class _OtpState extends State<Otp> {
         builder: (context) {
           return Center(
             child: SpinKitThreeInOut(
-              color: Color(0xffC471ED),
+              color: Color(0xffEF3D49),
               size: 50.0,
             ),
           );

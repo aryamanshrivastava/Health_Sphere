@@ -30,35 +30,61 @@ class _PhoneAuthState extends State<PhoneAuth> {
         child: Padding(
           padding:
               EdgeInsets.symmetric(horizontal: w * 0.05, vertical: h * 0.03),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: SingleChildScrollView(
+            child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Center(
-                child: Text(
-                  'Welcome to\nHealthSphere',
-                  style: TextStyle(
-                      fontSize: h * 0.04, fontWeight: FontWeight.bold),
-                ),
+              SizedBox(
+                height: h * 0.06,
               ),
               SizedBox(
-                height: h * 0.02,
-              ),
-              Container(
-                alignment: Alignment.center,
-                child: Image.asset(
-                  'assets/doc_pat.png',
-                  width: w * 0.5, // Adjust width as needed
-                  height: h * 0.2, // Adjust height as needed
+                width: w,
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                    Text(
+                    'Welcome to',
+                    style: TextStyle(
+                        color: Color(0xFF282828),
+                        fontSize: h * 0.032, 
+                        fontWeight: FontWeight.bold)                        
+                    ),
+                    Text(
+                    'HealthSphere',
+                    style: TextStyle(
+                      color: Color(0xFFEF3D49),
+                      fontSize: h * 0.04, 
+                      fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
               ),
-              Text(
-                'Phone',
-                style: TextStyle(fontSize: h * 0.02, color: Colors.black),
+              Image.asset(
+                'assets/doc_pat_2.png',
+                width: w * 0.8, // Adjust width as needed
+                height: h * 0.5, // Adjust height as needed
+              ), 
+              SizedBox(
+                width: w,
+                child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children:[
+                  Text(
+                    'To login',
+                    style: TextStyle(
+                      color: Color(0xFF282828),
+                      fontSize: w * 0.05, 
+                      fontWeight: FontWeight.bold),
+                    ),
+                  ]),
+              
               ),
               SizedBox(
                 height: h * 0.01,
-              ),
+              ),         
               TextFormField(
                 keyboardType: TextInputType.phone,
                 controller: phoneController,
@@ -66,17 +92,17 @@ class _PhoneAuthState extends State<PhoneAuth> {
                     fontSize: h * 0.02,
                     color: Colors.black,
                     fontWeight: FontWeight.w500),
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.phone),
-                  hintText: 'Enter your phone number',
-                  hintStyle: TextStyle(fontSize: h * 0.02),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(h * 0.01),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(h * 0.01),
-                  ),
-                ),
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.phone),
+                      hintText: 'Enter your phone number',
+                      hintStyle: TextStyle(fontSize: h * 0.02),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(h * 0.01),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(h * 0.01),
+                      ),
+                    ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your phone number';
@@ -89,7 +115,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
                 },
               ),
               SizedBox(
-                height: h * 0.04,
+                height: h * 0.015,
               ),
               Center(
                 child: Column(
@@ -121,6 +147,7 @@ class _PhoneAuthState extends State<PhoneAuth> {
           ),
         ),
       )),
+    )
     );
   }
 

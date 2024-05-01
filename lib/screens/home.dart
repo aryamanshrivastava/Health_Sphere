@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import '../data/healthtips.dart';
 import 'diabetes/diabeties.dart';
@@ -62,23 +63,32 @@ class _HomeScreenState extends State<HomeScreen> {
     double w = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Home', 
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 25,
+              ),  
+          ),
+          centerTitle: true,
+          backgroundColor: Color(0xFFEF3D49),
+        ),
         backgroundColor: Colors.white,
         body: Padding(
           padding:
               EdgeInsets.symmetric(horizontal: w * 0.04, vertical: h * 0.03),
           child: Column(
             children: [
-              SizedBox(
-                height: h * 0.02,
-              ),
               Row(
                 children: [
                   Text(
                     "Hi",
                     style: TextStyle(
-                        color: Color(0xFF000000),
+                        color: Color(0xFF282828),
                         fontWeight: FontWeight.w500,
-                        fontSize: h * 0.025),
+                        fontSize: h * 0.032),
                   ),
                   SizedBox(width: w * 0.015),
                   userName.isEmpty
@@ -88,14 +98,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       : Text(
                           '$userName,',
                           style: TextStyle(
-                              color: Color(0xFF000000),
+                              color: Color(0xffEF3D49),
                               fontWeight: FontWeight.bold,
-                              fontSize: h * 0.025),
+                              fontSize: h * 0.032),
                         ),
                 ],
               ),
               Text(
-                "Got yourself checked? Here, choose any option and find out.",
+                "Got yourself tested? Here, choose any option and find out.",
                 style: TextStyle(
                     fontSize: h * 0.025,
                     color: Color(0xFF000000),
@@ -108,8 +118,17 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.black, width: 0.5),
-                  borderRadius: BorderRadius.circular(h * 0.02),
-                  color: Color.fromARGB(255, 238, 232, 232),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.white,
+                      spreadRadius: 0.75,
+                      blurRadius: 2.5,
+                      blurStyle: BlurStyle.inner,
+                      offset: Offset(-1, 0),
+                    ),
+                  ] ,
+                  borderRadius: BorderRadius.circular(h * 0.03),
+                  color: Color(0xffEf3d49),
                 ),
                 width: w,
                 height: h * 0.25,
@@ -127,15 +146,23 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: w * 0.35,
                         height: h * 0.20,
                         decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black, width: 1.0),
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(h * 0.02),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black,
+                              spreadRadius: 0.5,
+                              blurRadius: 3,
+                              blurStyle: BlurStyle.outer,
+                              offset: Offset(1, 1),
+                            ),
+                          ],
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(h * 0.03),
                         ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
-                              width: w * 0.3,
+                              width: w * 0.25,
                               height: h * 0.1,
                               decoration: BoxDecoration(
                                 image: DecorationImage(
@@ -144,8 +171,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: h * 0.03),
-                            Text('LIVER',
+                            SizedBox(height: h * 0.01),
+                            Text('Liver',
                                 style: TextStyle(
                                     fontSize: h * 0.025,
                                     color: Color(0xff000000),
@@ -166,9 +193,17 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: w * 0.35,
                         height: h * 0.20,
                         decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black, width: 1.0),
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(h * 0.02),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black,
+                              spreadRadius: 0.5,
+                              blurRadius: 3,
+                              blurStyle: BlurStyle.outer,
+                              offset: Offset(1, 1),
+                            ),
+                          ],
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(h * 0.03),
                         ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -178,17 +213,17 @@ class _HomeScreenState extends State<HomeScreen> {
                               height: h * 0.1,
                               decoration: BoxDecoration(
                                 image: DecorationImage(
-                                  image: AssetImage('assets/dia.png'),
+                                  image: AssetImage('assets/diabetes.png'),
                                   fit: BoxFit.cover,
                                 ),
                               ),
                             ),
-                            SizedBox(height: h * 0.03),
-                            Text('DIABETES',
-                                style: TextStyle(
-                                    fontSize: h * 0.025,
-                                    color: Color(0xff000000),
-                                    fontWeight: FontWeight.bold)),
+                            SizedBox(height: h * 0.01),
+                            Text('Diabetes',
+                              style: TextStyle(
+                                fontSize: h * 0.025,
+                                color: Color(0xff000000),
+                                fontWeight: FontWeight.bold)),
                           ],
                         ),
                       ),
@@ -196,29 +231,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
-              SizedBox(height: h * 0.03),
+              SizedBox(height: h * 0.05),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Health Tips',
                       style: TextStyle(
-                          fontSize: h * 0.018,
-                          color: Color(0xffffffff),
+                          fontSize: h * 0.028,
+                          color: Color(0xff000000),
                           fontWeight: FontWeight.bold)),
                   Text('See All',
                       style: TextStyle(
                           fontSize: h * 0.018,
                           color: Color(0xffffffff),
-                          fontWeight: FontWeight.bold)),
-                ],
-              ),
-              SizedBox(height: h * 0.0),
-              Row(
-                children: [
-                  Text('Health Tips',
-                      style: TextStyle(
-                          fontSize: h * 0.028,
-                          color: Color(0xff000000),
                           fontWeight: FontWeight.bold)),
                 ],
               ),
