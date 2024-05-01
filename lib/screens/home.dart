@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+
 
 import '../data/healthtips.dart';
 import 'diabetes/diabeties.dart';
@@ -63,18 +65,40 @@ class _HomeScreenState extends State<HomeScreen> {
     double w = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Home', 
-            style: TextStyle(
+        bottomNavigationBar: Container(
+          color: Color(0xFFEF3D49),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            child: GNav(
               color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 25,
-              ),  
+              activeColor: Colors.black,
+              backgroundColor: Color(0xFFEF3D49),
+              tabBackgroundColor: Colors.white,
+              padding: EdgeInsets.all(8),
+              onTabChange: (value) => {
+                print(value)
+              },
+              tabs: const [
+                GButton(
+                  icon: Icons.home,
+                  text: "Home",
+                ),
+                GButton(
+                  icon: Icons.history,
+                  text: "History",
+                ),
+                GButton(
+                  icon: Icons.tips_and_updates_outlined,
+                  text: "Health Tips",
+                ),
+                GButton(
+                  icon: Icons.person,
+                  text: "Profile",
+                ),
+              ]),
           ),
-          centerTitle: true,
-          backgroundColor: Color(0xFFEF3D49),
         ),
+        
         backgroundColor: Colors.white,
         body: Padding(
           padding:
@@ -261,7 +285,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: Color(0xffffffff),
                         borderRadius: BorderRadius.circular(h * 0.02),
                       ),
-                      margin: EdgeInsets.only(bottom: h * 0.02),
+                      margin: EdgeInsets.only(bottom: h * 0.015),
                       padding: EdgeInsets.all(8.0),
                       child: Row(
                         children: [
@@ -287,7 +311,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              SizedBox(height: h * 0.008),
+                              SizedBox(height: h * 0.005),
                               SizedBox(
                                 width: w * 0.55,
                                 child: Text(

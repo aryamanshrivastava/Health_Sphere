@@ -174,10 +174,14 @@ class _LiverState extends State<Liver> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-            backgroundColor: Colors.white,
-            // title: Text('Liver', style: TextStyle(fontWeight: FontWeight.bold)),
-            // centerTitle: true,
-            ),
+        backgroundColor: Color(0xFFEF3d49),
+        title: const Text(
+            'Manual Entry',
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+          centerTitle: true,
+          iconTheme: IconThemeData(color: Colors.white),
+        ),
         body: Center(
           child: isImageLoaded
               ? Center(
