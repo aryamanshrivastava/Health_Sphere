@@ -71,10 +71,6 @@ class _DiabetiesState extends State<Diabeties> {
                   onPressed: () {
                     Navigator.pop(context);
                     sendData(2, imageUrl);
-                    // Navigator.push(context,
-                    //     MaterialPageRoute(builder: (context) {
-                    //   return Scaffold(backgroundColor: Colors.yellow);
-                    // }));
                   },
                   child: Text("Proceed"),
                 ),
@@ -171,8 +167,8 @@ class _DiabetiesState extends State<Diabeties> {
         appBar: AppBar(
         backgroundColor: Color(0xFFEF3d49),
         title: const Text(
-            'Manual Entry',
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+            'Diabetes',
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 25),
           ),
           centerTitle: true,
           iconTheme: IconThemeData(color: Colors.white),
@@ -192,14 +188,7 @@ class _DiabetiesState extends State<Diabeties> {
                       horizontal: w * 0.06, vertical: h * 0.03),
                   child: Column(
                     children: [
-                      Text(
-                        "Diabetes",
-                        style: TextStyle(
-                            color: Color(0xFFEF3D49),
-                            fontWeight: FontWeight.bold,
-                            fontSize: w * 0.10),
-                      ),
-                      SizedBox(height: h * 0.03),
+                      SizedBox(height: h * 0.01),
                       Text(
                         "Got your diabetes test report. \nHere choose any option to get the results.",
                         textAlign: TextAlign.left,

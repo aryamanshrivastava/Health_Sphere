@@ -4,6 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:health_sphere/screens/history.dart';
+import 'package:health_sphere/screens/profile.dart';
+import 'package:health_sphere/screens/tips.dart';
 
 
 import '../data/healthtips.dart';
@@ -21,6 +24,14 @@ class _HomeScreenState extends State<HomeScreen> {
   late User? currentUser;
   late String uid;
   String userName = ""; // Define a variable to hold the user's name
+
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   void initState() {
@@ -75,36 +86,42 @@ class _HomeScreenState extends State<HomeScreen> {
               backgroundColor: Color(0xFFEF3D49),
               tabBackgroundColor: Colors.white,
               padding: EdgeInsets.all(8),
-              onTabChange: (value) => {
-                print(value)
-              },
+              onTabChange: _onItemTapped,
               tabs: const [
                 GButton(
                   icon: Icons.home,
-                  text: "Home",
+                  text: " Home",
                 ),
                 GButton(
                   icon: Icons.history,
-                  text: "History",
+                  text: " History",
                 ),
                 GButton(
                   icon: Icons.tips_and_updates_outlined,
-                  text: "Health Tips",
+                  text: " Health Tips",
                 ),
                 GButton(
                   icon: Icons.person,
-                  text: "Profile",
+                  text: " Profile",
                 ),
               ]),
           ),
         ),
-        
         backgroundColor: Colors.white,
-        body: Padding(
+        body: _getScreen(_selectedIndex, h, w),
+      ),
+    );
+  }
+
+  Widget _getScreen(int index, double h, double w) {
+    switch (index) {
+      case 0:
+        return Padding(
           padding:
-              EdgeInsets.symmetric(horizontal: w * 0.04, vertical: h * 0.03),
+              EdgeInsets.fromLTRB(w * 0.04, h * 0.03, w * 0.04, h * 0.01),
           child: Column(
             children: [
+              SizedBox(width: w * 0.05),
               Row(
                 children: [
                   Text(
@@ -335,8 +352,15 @@ class _HomeScreenState extends State<HomeScreen> {
               )
             ],
           ),
-        ),
-      ),
-    );
+        );
+      case 1:
+        return History();
+      case 2:
+        return Tips();
+      case 3:
+        return Profile();
+      default:
+        return Container();
+    }
   }
 }

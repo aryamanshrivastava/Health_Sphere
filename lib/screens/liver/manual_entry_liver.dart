@@ -82,18 +82,7 @@ class ManualEntryLiverState extends State<ManualEntryLiver> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // SizedBox(
-                //   height: screenHeight * 0.02,
-                // ),
-                // Text(
-                //   "Manual Entry",
-                //   style: TextStyle(
-                //       fontWeight: FontWeight.bold,
-                //       fontSize: screenHeight * 0.04),
-                // ),
-                // SizedBox(
-                //   height: screenHeight * 0.03,
-                // ),
+               
                 _buildTextFormField(
                   labelText: 'Age',
                   controller: ageController,
@@ -171,7 +160,7 @@ class ManualEntryLiverState extends State<ManualEntryLiver> {
                     ),
                   ),
                   child: const Text('Submit',
-                      style: TextStyle(fontSize: 24, color: Colors.white)),
+                      style: TextStyle(fontSize: 22, color: Colors.white)),
                 ),
                 _sizedBox(screenHeight),
                 Center(

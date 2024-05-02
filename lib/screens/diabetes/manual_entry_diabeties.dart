@@ -109,7 +109,7 @@ class ManualEntryDiabetesState extends State<ManualEntryDiabetes> {
                     ),
                   ),
                   child: const Text('Submit',
-                      style: TextStyle(color: Colors.white, fontSize: 24)),
+                      style: TextStyle(color: Colors.white, fontSize: 22)),
                 ),
                 _sizedBox(screenHeight),
                 Center(
