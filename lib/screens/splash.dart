@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 3), checkLoginStatus);
+    Timer(Duration(seconds: 4), checkLoginStatus);
   }
 
   Future<void> checkLoginStatus() async {
@@ -47,10 +47,22 @@ class _SplashScreenState extends State<SplashScreen> {
             SizedBox(height: h * 0.02),
             Text('HealthSphere',
                 style: TextStyle(
-                    fontSize: h * 0.04,
+                    fontSize: h * 0.05,
                     color: Color(0xFFEF3D49),
                     fontWeight: FontWeight.bold,
-                    )),
+                    fontFamily: 'FiraSans',
+                    fontStyle: FontStyle.normal,
+                  )
+            ),
+            Text('Stay healthy',
+                style: TextStyle(
+                    fontSize: h * 0.028,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Montserrat',
+                    fontStyle: FontStyle.normal
+                  )
+            ),
           ],
         )));
   }
