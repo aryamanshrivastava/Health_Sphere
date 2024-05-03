@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 600), checkLoginStatus);
+    Timer(Duration(seconds: 4), checkLoginStatus);
   }
 
   Future<void> checkLoginStatus() async {
