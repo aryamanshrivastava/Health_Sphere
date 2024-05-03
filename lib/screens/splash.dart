@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 4), checkLoginStatus);
+    Timer(Duration(seconds: 600), checkLoginStatus);
   }
 
   Future<void> checkLoginStatus() async {
@@ -49,8 +49,8 @@ class _SplashScreenState extends State<SplashScreen> {
                 style: TextStyle(
                     fontSize: h * 0.05,
                     color: Color(0xFFEF3D49),
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.normal,
+                    fontFamily: 'FiraSans',
                     fontStyle: FontStyle.normal,
                   )
             ),
@@ -58,9 +58,9 @@ class _SplashScreenState extends State<SplashScreen> {
                 style: TextStyle(
                     fontSize: h * 0.028,
                     color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Montserrat',
-                    fontStyle: FontStyle.normal
+                    fontFamily: 'FiraSans',
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.normal,
                   )
             ),
           ],
