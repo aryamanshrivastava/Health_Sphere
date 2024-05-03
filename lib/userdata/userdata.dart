@@ -26,19 +26,37 @@ class _UserDataState extends State<UserData> {
     double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Personal Information',
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+        backgroundColor: Color(0xffef3d49),
+        title: Text('Sign Up',
+            style: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold)),
       ),
       body: Form(
         key: formKey,
         child: Padding(
           padding:
               EdgeInsets.symmetric(horizontal: w * 0.05, vertical: h * 0.03),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: SingleChildScrollView(child:  Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              Text(
+                "Enter the following details to create an account.",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22
+                ),
+              ),
+              Image.asset(
+                'assets/document.png',
+                width: w * 0.5,
+                height: h * 0.30,
+              ),
+              SizedBox(
+                height: h * 0.03,
+              ),
               buildTextFormField(
                   labelText: 'Name',
                   controller: nameController,
@@ -81,7 +99,7 @@ class _UserDataState extends State<UserData> {
               // gender dropdown
               DropdownButtonFormField(
                 focusColor: Colors.white,
-                dropdownColor: Colors.white,
+                dropdownColor: Colors.white,  
                 value: selectedGender,
                 hint: Text('Select Gender'),
                 onChanged: (newValue) {
@@ -109,10 +127,10 @@ class _UserDataState extends State<UserData> {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size(w * 0.9, h * 0.06),
-                  backgroundColor: Colors.orange.shade500,
+                  backgroundColor: Color(0xFFEF3D49),
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(h * 0.02),
+                    borderRadius: BorderRadius.circular(15),
                   ),
                 ),
                 onPressed: () {
@@ -168,13 +186,13 @@ class _UserDataState extends State<UserData> {
                     });
                   }
                 },
-                child: Text('Submit', style: TextStyle(fontSize: h * 0.02)),
+                child: Text('Submit', style: TextStyle(fontSize: 22)),
               ),
             ],
           ),
         ),
       ),
-    );
+    ));
   }
 
   Widget buildTextFormField({
