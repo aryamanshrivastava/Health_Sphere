@@ -1,7 +1,9 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, unnecessary_string_interpolations, use_key_in_widget_constructors, use_build_context_synchronously
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:health_sphere/auth/phone.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -11,14 +13,65 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  late User? currentUser;
+  late String uid;
+  String userName = "";
+  String userEmail = "";
+  String userPhoneNumber = "";
+  String userAge = "";
+  String userGender = "";
 
-  Future<void> _logout() async {
+  @override
+  void initState() {
+    super.initState();
+    currentUser = auth.currentUser;
+    if (currentUser != null) {
+      uid = currentUser!.uid;
+      fetchUserData(uid).then((DocumentSnapshot userData) {
+        if (userData.exists && userData.data() != null) {
+          // Access user data from the snapshot and update the UI
+          setState(() {
+            // Example of accessing user name and updating UI
+            userName = userData['name'];
+            userEmail = userData['email'];
+            userPhoneNumber = userData['phone'];
+            userGender = userData['gender'];
+            userAge = userData['age'];
+          });
+        }
+      });
+    } else {
+      CircularProgressIndicator();
+    }
+  }
+
+  Future<DocumentSnapshot> fetchUserData(String uid) async {
     try {
-      await _auth.signOut();
+      // Get reference to the user document using the provided UID
+      DocumentReference userRef =
+          FirebaseFirestore.instance.collection('users').doc(uid);
+
+      // Fetch the user document
+      DocumentSnapshot userSnapshot = await userRef.get();
+
+      return userSnapshot;
+    } catch (error) {
+      // Handle any errors that occur
+      print("Error fetching user data: $error");
+      return Future.error(error.toString());
+    }
+  }
+
+  Future<void> _logout(BuildContext context) async {
+    try {
+      await auth.signOut();
       // Navigate to login screen or home screen
       // For example:
-      // Navigator.pushReplacementNamed(context, '/login');
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => PhoneAuth()),
+      );
     } catch (e) {
       print('Error logging out: $e');
     }
@@ -82,7 +135,7 @@ class _ProfileState extends State<Profile> {
                             children: [
                               SizedBox(width: w * 0.08),
                               Text(
-                                  "Aryaman Shrivastava", 
+                                  '$userName', 
                                   style: TextStyle(
                                     fontSize: 21,
                                     fontWeight: FontWeight.w500
@@ -119,7 +172,7 @@ class _ProfileState extends State<Profile> {
                               children: [
                                 SizedBox(width: w * 0.08),
                                 Text(
-                                  "aryamans135@yahoo.com", 
+                                  '$userEmail', 
                                   style: TextStyle(
                                     fontSize: 21,
                                     fontWeight: FontWeight.w500
@@ -156,7 +209,7 @@ class _ProfileState extends State<Profile> {
                           children: [
                             SizedBox(width: w * 0.08),
                             Text(
-                              "+91-7067250520", 
+                              '$userPhoneNumber', 
                               style: TextStyle(
                                 fontSize: 21,
                                 fontWeight: FontWeight.w500
@@ -220,7 +273,7 @@ class _ProfileState extends State<Profile> {
                               children: [
                                 SizedBox(width: w * 0.08),
                                 Text(
-                                  "22", 
+                                  '$userAge', 
                                   style: TextStyle(
                                     fontSize: 21,
                                     fontWeight: FontWeight.w500
@@ -228,7 +281,7 @@ class _ProfileState extends State<Profile> {
                                 ),
                                 SizedBox(width: w * 0.5),
                                 Text(
-                                  "Male", 
+                                  '$userGender', 
                                   style: TextStyle(
                                     fontSize: 21,
                                     fontWeight: FontWeight.w500
@@ -266,9 +319,7 @@ class _ProfileState extends State<Profile> {
                             ),
                           ),
                           ElevatedButton.icon(
-                            onPressed: () {
-                              _logout();
-                            },
+                            onPressed: () => _logout(context),
                             icon: Icon(Icons.logout_rounded),
                             label: Text(
                               "Logout",
