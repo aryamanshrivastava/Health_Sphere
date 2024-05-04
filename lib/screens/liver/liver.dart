@@ -46,13 +46,13 @@ class _LiverState extends State<Liver> {
       setState(() {
         isImageLoaded = false;
       });
-      showFinalDialog(imageUrl);
+      showFinalDialog(imageUrl, 'O');
     } catch (e) {
       print('Error uploading image: $e');
     }
   }
 
-  void showFinalDialog(String imageUrl) {
+  void showFinalDialog(String imageUrl, String uploadType) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -69,7 +69,7 @@ class _LiverState extends State<Liver> {
                 ElevatedButton(
                   onPressed: () {
                     Navigator.pop(context);
-                    sendData(1, imageUrl);
+                    sendData(1, uploadType, imageUrl);
                     // Navigator.push(context,
                     //     MaterialPageRoute(builder: (context) {
                     //   return Scaffold(backgroundColor: Colors.yellow);
@@ -83,7 +83,7 @@ class _LiverState extends State<Liver> {
     );
   }
 
-  void sendData(int btnId, String imageUrl) async {
+  void sendData(int btnId, String uploadType, String imageUrl) async {
     if (imageUrl.isEmpty) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('Please upload an image')));
@@ -91,6 +91,7 @@ class _LiverState extends State<Liver> {
     }
     Map<String, dynamic> data = {
       'disease_value': btnId,
+      'upload_type': uploadType,
       'image_url': imageUrl,
     };
     print('$data');
@@ -147,14 +148,14 @@ class _LiverState extends State<Liver> {
             children: [
               ListTile(
                 title:
-                    Text("Upload from Device", style: TextStyle(fontSize: 20)),
+                    Text("Upload from device", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
                 onTap: () {
                   Navigator.pop(context);
                   pickImage(ImageSource.gallery);
                 },
               ),
               ListTile(
-                title: Text("Use Camera", style: TextStyle(fontSize: 20)),
+                title: Text("Use camera", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
                 onTap: () {
                   Navigator.pop(context);
                   pickImage(ImageSource.camera);
