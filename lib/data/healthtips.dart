@@ -13,19 +13,19 @@ final List<HealthTips> healthTips = [
   HealthTips(
     title: 'Stay active',
     description:
-        'Incorporate physical activity into your daily routine to improve cardiovascular health and boost mood.',
+        'Physical activity in your daily routine improves cardiovascular health and boost mood.',
     imageUrl: 'assets/stay_active.png',
   ),
   HealthTips(
     title: 'Eat a balanced diet',
     description:
-        'Consume a variety of fruits, vegetables, lean proteins, and whole grains for essential nutrients.',
+        'Consume multiple varieties of fruits, vegetables, lean proteins, and whole grains for essential nutrients.',
     imageUrl: 'assets/1.png',
   ),
   HealthTips(
     title: 'Stay hydrated',
     description:
-        'Drink plenty of water throughout the day to support digestion, circulation, and overall health.',
+        'Drinking plenty of water throughout the day supports your digestion, circulation and overall health.',
     imageUrl: 'assets/stay_hydrated.png',
   ),
   HealthTips(
@@ -35,9 +35,9 @@ final List<HealthTips> healthTips = [
     imageUrl: 'assets/sleep.png',
   ),
   HealthTips(
-    title: 'manage stress',
+    title: 'Manage stress',
     description:
-        'Practice stress-reducing techniques such as deep breathing or meditation to alleviate tension.',
+        'Practice multipl stress reducing techniques. Deep breathing or meditation alleviates tension.',
     imageUrl: 'assets/manage_stress.png',
   ),
   HealthTips(

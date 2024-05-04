@@ -25,10 +25,9 @@ class _TipsState extends State<Tips> {
             children: [
               SizedBox(height: h * 0.03),
               SizedBox(
-                
                 width: w,
                 child: Text(
-                  "These are some of the simple tips stay healthy.", 
+                  "These are some of the simple tips to stay healthy.", 
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 22
@@ -80,6 +79,7 @@ class _TipsState extends State<Tips> {
                                     child: Text(
                                       tip.description,
                                       maxLines: 3,
+                                      textAlign: TextAlign.justify,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         color: Color(0xff000000),
