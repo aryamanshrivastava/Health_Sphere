@@ -32,7 +32,7 @@ class _ProfileState extends State<Profile> {
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.white,
             body:SingleChildScrollView(
               padding: EdgeInsets.all(16),
               child: Column(
