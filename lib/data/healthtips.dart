@@ -13,7 +13,7 @@ final List<HealthTips> healthTips = [
   HealthTips(
     title: 'Stay active',
     description:
-        'Physical activity in your daily routine improves cardiovascular health and boost mood.',
+        'Physical activities in your daily routine will improve cardiovascular health and boost mood.',
     imageUrl: 'assets/stay_active.png',
   ),
   HealthTips(
