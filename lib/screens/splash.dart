@@ -38,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     double h = MediaQuery.of(context).size.height;
     return Scaffold(
-        backgroundColor: Color(0xffffffff),
+        backgroundColor: Colors.white,
         body: Center(
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

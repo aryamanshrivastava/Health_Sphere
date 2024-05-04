@@ -28,7 +28,7 @@ class Otp extends StatefulWidget {
 class _OtpState extends State<Otp> {
   String? otp;
   String? verificationId;
-  int resendTime = 600;
+  int resendTime = 60;
   late Timer countdownTimer;
   @override
   void initState() {
@@ -82,7 +82,7 @@ class _OtpState extends State<Otp> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                height: h * 0.03,
+                height: h * 0.01,
               ),
               SizedBox(
                 width: w,

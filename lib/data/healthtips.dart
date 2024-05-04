@@ -53,25 +53,25 @@ final List<HealthTips> healthTips = [
     imageUrl: 'assets/smart-factory.png',
   ),
   HealthTips(
-    title: 'Prioritize Mental Health',
+    title: 'Prioritize mental health',
     description:
         'Take time for self-care activities and seek support from loved ones or professionals when needed.',
     imageUrl: 'assets/mental-health.png',
   ),
   HealthTips(
-    title: 'Practice Good Hygiene',
+    title: 'Practice good hygiene',
     description:
         'Maintain proper hygiene habits such as regular handwashing and dental care to prevent infections.',
     imageUrl: 'assets/hygiene.png',
   ),
   HealthTips(
-    title: 'Stay Connected',
+    title: 'Stay connected',
     description:
         'Foster meaningful relationships to cultivate a support network that enhances emotional resilience.',
     imageUrl: 'assets/network.png',
   ),
   HealthTips(
-    title: 'Listen to Your Body',
+    title: 'Listen to your body',
     description:
         'Pay attention to your body\'s signals and respond appropriately by seeking medical attention.',
     imageUrl: 'assets/attention.png',

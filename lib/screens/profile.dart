@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, unnecessary_string_interpolations, use_key_in_widget_constructors, use_build_context_synchronously
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, unnecessary_string_interpolations, use_key_in_widget_constructors, use_build_context_synchronously, curly_braces_in_flow_control_structures
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -58,23 +58,28 @@ class _ProfileState extends State<Profile> {
       return userSnapshot;
     } catch (error) {
       // Handle any errors that occur
-      print("Error fetching user data: $error");
       return Future.error(error.toString());
     }
   }
 
   Future<void> _logout(BuildContext context) async {
-    try {
       await auth.signOut();
       // Navigate to login screen or home screen
       // For example:
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => PhoneAuth()),
-      );
-    } catch (e) {
-      print('Error logging out: $e');
-    }
+        MaterialPageRoute(builder: (context) => PhoneAuth()
+        )
+    );
+  }
+
+  String _getUserImage(String gender) {
+    if(gender == "Male" || gender == "male")
+      return 'assets/man.png';
+    else if(gender == "Female" || gender == "female")
+      return 'assets/woman.png';
+    else
+      return 'assets/profile.png';
   }
 
   
@@ -87,21 +92,25 @@ class _ProfileState extends State<Profile> {
       child: Scaffold(
         backgroundColor: Colors.white,
             body:SingleChildScrollView(
-              padding: EdgeInsets.all(16),
+              padding: EdgeInsets.all(10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: h * 0.01),
+                  SizedBox(height: h * 0.03),
                   Center(
-                    child:ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
-                      child: SizedBox( 
-                        width: w * 0.5,
-                        height: h * 0.3,
-                        child: Image.asset(
-                        'assets/logo_1.png',
-                        ),
-                      )
+                    child: Text(
+                      "This section contains your personal information.",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 22,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: h * 0.04),
+                  Center(
+                    child: CircleAvatar(
+                      radius: 100,
+                      backgroundImage: AssetImage(_getUserImage(userGender)),
                     ),
                   ),
                   SizedBox(height: h * 0.03),
@@ -273,13 +282,13 @@ class _ProfileState extends State<Profile> {
                               children: [
                                 SizedBox(width: w * 0.08),
                                 Text(
-                                  '$userAge', 
+                                  '$userAge years', 
                                   style: TextStyle(
                                     fontSize: 21,
                                     fontWeight: FontWeight.w500
                                   ),
                                 ),
-                                SizedBox(width: w * 0.5),
+                                SizedBox(width: w * 0.36),
                                 Text(
                                   '$userGender', 
                                   style: TextStyle(
@@ -292,7 +301,7 @@ class _ProfileState extends State<Profile> {
                             SizedBox(height: h * 0.02),
                           ],
                         ),
-                        SizedBox(height: h * 0.09),
+                        SizedBox(height: h * 0.05),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
