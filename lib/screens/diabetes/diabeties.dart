@@ -70,7 +70,7 @@ class _DiabetiesState extends State<Diabeties> {
                 ElevatedButton(
                   onPressed: () {
                     Navigator.pop(context);
-                    sendData(2, uploadType ,imageUrl);
+                    sendDataOCR(2, uploadType ,imageUrl);
                   },
                   child: Text("Proceed"),
                 ),
@@ -80,7 +80,7 @@ class _DiabetiesState extends State<Diabeties> {
     );
   }
 
-  void sendData(int btnId, String uploadType, String imageUrl) async {
+  void sendDataOCR(int btnId, String uploadType, String imageUrl) async {
     if (imageUrl.isEmpty) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('Please upload an image')));
