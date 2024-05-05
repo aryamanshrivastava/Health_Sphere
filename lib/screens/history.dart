@@ -12,27 +12,19 @@ class History extends StatefulWidget {
 class _HistoryState extends State<History> {
   @override
   Widget build(BuildContext context) {
-    double h = MediaQuery.of(context).size.height;
+    //double h = MediaQuery.of(context).size.height;
 
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: Padding(
-          padding: EdgeInsets.all(10),
-          child: Column(
-            children: [
-              SizedBox(height: h * 0.03),
-              Text(
-                "You don't have any history of disease predictions.",
+        child: Scaffold(
+            backgroundColor: Colors.white,
+            body: Center(
+              child: Text(
+                "You don't have any history of Disease Predictions.",
                 style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 22,
-                      ),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
+                ),
               ),
-            ],
-          ),
-        )
-      )
-    ); 
+            )));
   }
 }

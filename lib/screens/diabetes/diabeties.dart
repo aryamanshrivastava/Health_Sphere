@@ -60,17 +60,25 @@ class _DiabetiesState extends State<Diabeties> {
         return AlertDialog(
             title: Text("Image Uploaded Successfully,\nWait for the results!",
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w800)),
+                style: TextStyle(fontSize: 25)),
             content: Row(
               children: [
                 ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xffEF3D49),
+                        foregroundColor: Color(0xffFFFFFF),
+                        minimumSize: Size(100, 50)),
                     onPressed: () => Navigator.pop(context),
                     child: Text("Cancel")),
                 Spacer(),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xffEF3D49),
+                      foregroundColor: Color(0xffFFFFFF),
+                      minimumSize: Size(100, 50)),
                   onPressed: () {
                     Navigator.pop(context);
-                    sendDataOCR(2, uploadType ,imageUrl);
+                    sendDataOCR(2, uploadType, imageUrl);
                   },
                   child: Text("Proceed"),
                 ),
@@ -81,7 +89,21 @@ class _DiabetiesState extends State<Diabeties> {
   }
 
   void sendDataOCR(int btnId, String uploadType, String imageUrl) async {
+  
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return Center(
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(Color(0xffEF3D49)),
+          ),
+        );
+      },
+    );
+
     if (imageUrl.isEmpty) {
+      Navigator.pop(context);
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('Please upload an image')));
       return;
@@ -89,7 +111,7 @@ class _DiabetiesState extends State<Diabeties> {
 
     String prediction = "";
     int status = -1;
-    
+
     Map<String, dynamic> data = {
       'disease_value': btnId,
       'upload_type': uploadType,
@@ -106,31 +128,33 @@ class _DiabetiesState extends State<Diabeties> {
       );
       if (response.statusCode == 200) {
         print('Request successful: ${response.body}');
-          final jsonOutput = json.decode(response.body);
-          setState(() {
-            prediction = jsonOutput['prediction'];
-            status = jsonOutput['status'];
+        final jsonOutput = json.decode(response.body);
+        setState(() {
+          prediction = jsonOutput['prediction'];
+          status = jsonOutput['status'];
 
-            if (status == 0) {
+          if (status == 0) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => DiseaseResult(
-                diseasePrediction : prediction,
-                diseaseStatus : status,
-              )
-            )
+              MaterialPageRoute(
+                builder: (context) => DiseaseResult(
+                  diseasePrediction: prediction,
+                  diseaseStatus: status,
+                ),
+              ),
             );
           } else if (status == 1) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => DiseaseResult(
-                diseasePrediction : prediction,
-                diseaseStatus : status,
-                )
-              )
+              MaterialPageRoute(
+                builder: (context) => DiseaseResult(
+                  diseasePrediction: prediction,
+                  diseaseStatus: status,
+                ),
+              ),
             );
           }
-          });
+        });
       } else {
         print('Failed to send data. Status code: ${response.statusCode}');
       }
@@ -148,12 +172,14 @@ class _DiabetiesState extends State<Diabeties> {
           }
         });
       } else {
-        // No user is logged in, handle accordingly
         print('No user currently logged in');
         return null;
       }
     } catch (e) {
       print('Error sending data: $e');
+    } finally {
+      // ignore: use_build_context_synchronously
+      Navigator.pop(context);
     }
   }
 
@@ -162,20 +188,24 @@ class _DiabetiesState extends State<Diabeties> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Choose an option",
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+          title: Text("Choose an option", style: TextStyle(fontSize: 25)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
+                  splashColor: Color(0xFFEF3D49),
                   title: Text("Upload from device",
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
                   onTap: () {
                     Navigator.pop(context);
                     pickImage(ImageSource.gallery);
                   }),
               ListTile(
-                  title: Text("Use camera", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
+                  splashColor: Color(0xFFEF3D49),
+                  title: Text("Use camera",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
                   onTap: () {
                     Navigator.pop(context);
                     pickImage(ImageSource.camera);
@@ -194,10 +224,11 @@ class _DiabetiesState extends State<Diabeties> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-        backgroundColor: Color(0xFFEF3d49),
-        title: const Text(
+          backgroundColor: Color(0xFFEF3d49),
+          title: const Text(
             'Diabetes',
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 25),
+            style: TextStyle(
+                fontWeight: FontWeight.bold, color: Colors.white, fontSize: 25),
           ),
           centerTitle: true,
           iconTheme: IconThemeData(color: Colors.white),
@@ -219,7 +250,7 @@ class _DiabetiesState extends State<Diabeties> {
                     children: [
                       SizedBox(height: h * 0.01),
                       Text(
-                        "Got your diabetes test report. \nHere choose any option to get the results.",
+                        "Got your diabetes test report.\nHere choose any option to get the results.",
                         textAlign: TextAlign.left,
                         style: TextStyle(
                             fontSize: h * 0.025, fontWeight: FontWeight.bold),
@@ -238,16 +269,17 @@ class _DiabetiesState extends State<Diabeties> {
                               blurStyle: BlurStyle.inner,
                               offset: Offset(-1, 0),
                             ),
-                          ] ,
+                          ],
                           borderRadius: BorderRadius.circular(h * 0.03),
-                           color: Color(0xFFEF3D49),
+                          color: Color(0xFFEF3D49),
                         ),
                         padding: EdgeInsets.all(16),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             optionCard(
-                                h, w, 'Upload\nReport', 'assets/upload.png', () {
+                                h, w, 'Upload\nReport', 'assets/upload.png',
+                                () {
                               showOptionsDialog();
                             }),
                             SizedBox(width: w * 0.07),
@@ -275,13 +307,13 @@ class _DiabetiesState extends State<Diabeties> {
         height: h * 0.24,
         decoration: BoxDecoration(
           boxShadow: const [
-                    BoxShadow(
-                      color: Color(0xFFef3d49),
-                      spreadRadius: 0.75,
-                      blurRadius: 2.5,
-                      blurStyle: BlurStyle.inner,
-                      offset: Offset(-1, 0),
-                    ),
+            BoxShadow(
+              color: Color(0xFFef3d49),
+              spreadRadius: 0.75,
+              blurRadius: 2.5,
+              blurStyle: BlurStyle.inner,
+              offset: Offset(-1, 0),
+            ),
           ],
           color: Colors.white,
           border: Border.all(color: Colors.black, width: 1.0),
@@ -311,6 +343,3 @@ class _DiabetiesState extends State<Diabeties> {
     );
   }
 }
-
-
-

@@ -66,20 +66,19 @@ class ManualEntryLiverState extends State<ManualEntryLiver> {
           "albumin": double.parse(albuminController.text),
           "a:g_ratio": double.parse(albuminAndGlobulinRatioController.text)
         }
-      ] 
+      ]
     };
 
     print(jsonData);
     String requestBody = jsonEncode(jsonData);
 
-    try{
-      var response = await http.post(
-        Uri.parse('http://192.168.211.34:5000/predict'),
-        headers: <String, String>{
-          'Content-Type' : 'application/json; charset=UTF-8',
-        },
-        body: requestBody
-      );
+    try {
+      var response =
+          await http.post(Uri.parse('http://192.168.211.34:5000/predict'),
+              headers: <String, String>{
+                'Content-Type': 'application/json; charset=UTF-8',
+              },
+              body: requestBody);
       if (response.statusCode == 200) {
         print('Request successful: ${response.body}');
         final jsonOutput = json.decode(response.body);
@@ -89,22 +88,20 @@ class ManualEntryLiverState extends State<ManualEntryLiver> {
 
           if (status == 0) {
             Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => DiseaseResult(
-                diseasePrediction : prediction,
-                diseaseStatus : status,
-              )
-            )
-            );
+                context,
+                MaterialPageRoute(
+                    builder: (context) => DiseaseResult(
+                          diseasePrediction: prediction,
+                          diseaseStatus: status,
+                        )));
           } else if (status == 1) {
             Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => DiseaseResult(
-                diseasePrediction : prediction,
-                diseaseStatus : status,
-                )
-              )
-            );
+                context,
+                MaterialPageRoute(
+                    builder: (context) => DiseaseResult(
+                          diseasePrediction: prediction,
+                          diseaseStatus: status,
+                        )));
           }
         });
       } else {
@@ -194,6 +191,7 @@ class ManualEntryLiverState extends State<ManualEntryLiver> {
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
                       formKey.currentState!.save();
+                      
                       sendData();
                     }
                   },

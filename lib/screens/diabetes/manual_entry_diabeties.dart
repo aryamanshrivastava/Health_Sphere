@@ -77,22 +77,20 @@ class ManualEntryDiabetesState extends State<ManualEntryDiabetes> {
 
           if (status == 0) {
             Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => DiseaseResult(
-                diseasePrediction : prediction,
-                diseaseStatus : status,
-              )
-            )
-            );
+                context,
+                MaterialPageRoute(
+                    builder: (context) => DiseaseResult(
+                          diseasePrediction: prediction,
+                          diseaseStatus: status,
+                        )));
           } else if (status == 1) {
             Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => DiseaseResult(
-                diseasePrediction : prediction,
-                diseaseStatus : status,
-                )
-              )
-            );
+                context,
+                MaterialPageRoute(
+                    builder: (context) => DiseaseResult(
+                          diseasePrediction: prediction,
+                          diseaseStatus: status,
+                        )));
           }
         });
       } else {

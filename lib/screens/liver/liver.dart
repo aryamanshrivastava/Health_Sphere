@@ -36,7 +36,6 @@ class _LiverState extends State<Liver> {
       uploadImage(file.path);
     }
   }
-  
 
   Future<void> uploadImage(String filePath) async {
     Reference reference =
@@ -60,22 +59,25 @@ class _LiverState extends State<Liver> {
       builder: (BuildContext context) {
         return AlertDialog(
             title: Text("Image Uploaded Successfully,\nWait for the results!",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w800)),
+                textAlign: TextAlign.center, style: TextStyle(fontSize: 25)),
             content: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xffEF3D49),
+                        foregroundColor: Color(0xffFFFFFF),
+                        minimumSize: Size(100, 50)),
                     onPressed: () => Navigator.pop(context),
                     child: Text("Cancel")),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xffEF3D49),
+                      foregroundColor: Color(0xffFFFFFF),
+                      minimumSize: Size(100, 50)),
                   onPressed: () {
                     Navigator.pop(context);
                     sendData(1, uploadType, imageUrl);
-                    // Navigator.push(context,
-                    //     MaterialPageRoute(builder: (context) {
-                    //   return Scaffold(backgroundColor: Colors.yellow);
-                    // }));
                   },
                   child: Text("Proceed"),
                 ),
@@ -86,7 +88,19 @@ class _LiverState extends State<Liver> {
   }
 
   void sendData(int btnId, String uploadType, String imageUrl) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return Center(
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(Color(0xffEF3D49)),
+          ),
+        );
+      },
+    );
     if (imageUrl.isEmpty) {
+      Navigator.pop(context);
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('Please upload an image')));
       return;
@@ -94,7 +108,7 @@ class _LiverState extends State<Liver> {
 
     String prediction = "";
     int status = -1;
-    
+
     Map<String, dynamic> data = {
       'disease_value': btnId,
       'upload_type': uploadType,
@@ -110,32 +124,30 @@ class _LiverState extends State<Liver> {
         body: jsonEncode(data),
       );
       if (response.statusCode == 200) {
-          print('Request successful: ${response.body}');
-          final jsonOutput = json.decode(response.body);
-          setState(() {
-            prediction = jsonOutput['prediction'];
-            status = jsonOutput['status'];
+        print('Request successful: ${response.body}');
+        final jsonOutput = json.decode(response.body);
+        setState(() {
+          prediction = jsonOutput['prediction'];
+          status = jsonOutput['status'];
 
-            if (status == 0) {
+          if (status == 0) {
             Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => DiseaseResult(
-                diseasePrediction : prediction,
-                diseaseStatus : status,
-              )
-            )
-            );
+                context,
+                MaterialPageRoute(
+                    builder: (context) => DiseaseResult(
+                          diseasePrediction: prediction,
+                          diseaseStatus: status,
+                        )));
           } else if (status == 1) {
             Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => DiseaseResult(
-                diseasePrediction : prediction,
-                diseaseStatus : status,
-                )
-              )
-            );
+                context,
+                MaterialPageRoute(
+                    builder: (context) => DiseaseResult(
+                          diseasePrediction: prediction,
+                          diseaseStatus: status,
+                        )));
           }
-          });
+        });
       } else {
         print('Failed to send data. Status code: ${response.statusCode}');
       }
@@ -157,8 +169,9 @@ class _LiverState extends State<Liver> {
         return null;
       }
     } catch (e) {
-      CircularProgressIndicator();
       print('Error sending data: $e');
+    } finally {
+      Navigator.pop(context);
     }
   }
 
@@ -167,21 +180,25 @@ class _LiverState extends State<Liver> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Choose an option",
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+          title: Text("Choose an option", style: TextStyle(fontSize: 25)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                title:
-                    Text("Upload from device", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
+                splashColor: Color(0xFFEF3D49),
+                title: Text("Upload from device",
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
                 onTap: () {
                   Navigator.pop(context);
                   pickImage(ImageSource.gallery);
                 },
               ),
               ListTile(
-                title: Text("Use camera", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
+                splashColor: Color(0xFFEF3D49),
+                title: Text("Use camera",
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
                 onTap: () {
                   Navigator.pop(context);
                   pickImage(ImageSource.camera);
@@ -201,10 +218,11 @@ class _LiverState extends State<Liver> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-        backgroundColor: Color(0xFFEF3d49),
-        title: const Text(
+          backgroundColor: Color(0xFFEF3d49),
+          title: const Text(
             'Liver',
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 25),
+            style: TextStyle(
+                fontWeight: FontWeight.bold, color: Colors.white, fontSize: 25),
           ),
           centerTitle: true,
           iconTheme: IconThemeData(color: Colors.white),
@@ -245,14 +263,14 @@ class _LiverState extends State<Liver> {
                               blurStyle: BlurStyle.inner,
                               offset: Offset(-1, 0),
                             ),
-                          ] ,
+                          ],
                           borderRadius: BorderRadius.circular(h * 0.03),
-                           color: Color(0xFFEF3D49),
+                          color: Color(0xFFEF3D49),
                         ),
                         padding: EdgeInsets.all(16),
-                        child: Row(                   
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
                             optionCard(h, w, 'Upload\nReport',
                                 'assets/upload.png', showOptionsDialog),
                             SizedBox(width: w * 0.07),
@@ -280,14 +298,14 @@ class _LiverState extends State<Liver> {
         height: h * 0.24,
         decoration: BoxDecoration(
           boxShadow: const [
-                    BoxShadow(
-                      color: Color(0xFFef3d49),
-                      spreadRadius: 0.75,
-                      blurRadius: 2.5,
-                      blurStyle: BlurStyle.inner,
-                      offset: Offset(-1, 0),
-                    ),
-          ] ,
+            BoxShadow(
+              color: Color(0xFFef3d49),
+              spreadRadius: 0.75,
+              blurRadius: 2.5,
+              blurStyle: BlurStyle.inner,
+              offset: Offset(-1, 0),
+            ),
+          ],
           color: Colors.white,
           border: Border.all(color: Colors.black, width: 1.0),
           borderRadius: BorderRadius.circular(h * 0.02),
