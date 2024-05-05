@@ -132,6 +132,7 @@ class ManualEntryDiabetesState extends State<ManualEntryDiabetes> {
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
                       formKey.currentState!.save();
+                      sendData();
                     }
                   },
                   style: ElevatedButton.styleFrom(
