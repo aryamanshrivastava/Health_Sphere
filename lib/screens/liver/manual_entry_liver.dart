@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class ManualEntryLiver extends StatefulWidget {
   const ManualEntryLiver({super.key});
@@ -82,7 +83,7 @@ class ManualEntryLiverState extends State<ManualEntryLiver> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-               
+                _sizedBox(screenHeight),
                 _buildTextFormField(
                   labelText: 'Age',
                   controller: ageController,
@@ -115,7 +116,7 @@ class ManualEntryLiverState extends State<ManualEntryLiver> {
                 _sizedBox(screenHeight),
                 _buildTextFormField(
                   labelText: 'Aspartate Aminotransferase (SGOT/AST) (IU/L)',
-                  controller: alamineAminotransferaseController,
+                  controller: aspartateAminotransferaseController,
                 ),
                 _sizedBox(screenHeight),
                 _buildTextFormField(
@@ -187,7 +188,8 @@ class ManualEntryLiverState extends State<ManualEntryLiver> {
       decoration: InputDecoration(
           labelText: labelText,
           labelStyle: const TextStyle(color: Colors.black38),
-          border: const OutlineInputBorder(
+          border: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.green),
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
           ),
           suffix: Column(

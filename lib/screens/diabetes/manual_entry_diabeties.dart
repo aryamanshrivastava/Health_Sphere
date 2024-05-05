@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:health_sphere/screens/result.dart';
 import 'package:http/http.dart' as http;
 
 class ManualEntryDiabetes extends StatefulWidget {
@@ -42,19 +43,21 @@ class ManualEntryDiabetesState extends State<ManualEntryDiabetes> {
   // String getConcatenatedValues() {
   //   return '[${pregnanciesController.text}, ${glucoseController.text}, ${bloodPressureController.text}, ${skinThicknessController.text}, ${insulinController.text}, ${bmiController.text}, ${diabetesPedigreeController.text}, ${ageController.text}]';
   // }
+  String prediction = "";
+  int status = -1;
 
   Future<void> sendData() async {
     // Prepare the data to be sent
     Map<String, dynamic> jsonData = {
-      "disease value": 2,
+      "disease_value": 2,
       "upload_type": "M",
       "parameters": [
         {
           "pedi": double.parse(diabetesPedigreeController.text),
           "mass": double.parse(bmiController.text),
-          "preg": int.parse(pregnanciesController.text),
-          "age": int.parse(ageController.text),
-          "plas": int.parse(glucoseController.text)
+          "preg": double.parse(pregnanciesController.text),
+          "age": double.parse(ageController.text),
+          "plas": double.parse(glucoseController.text)
         }
       ]
     };
@@ -64,15 +67,39 @@ class ManualEntryDiabetesState extends State<ManualEntryDiabetes> {
 
     try {
       var response = await http.post(
-        Uri.parse('http://10.100.167.73:5000/predict'),
+        Uri.parse('http://192.168.178.34:5000/predict'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: requestBody,
       );
       if (response.statusCode == 200) {
-        //navigate to the result page
-        //print('Request successful: ${response.body}');
+        print('Request successful: ${response.body}');
+        final jsonOutput = json.decode(response.body);
+        setState(() {
+          prediction = jsonOutput['prediction'];
+          status = jsonOutput['status'];
+
+          if (status == 0) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => DiseaseResult(
+                diseasePrediction : prediction,
+                diseaseStatus : status,
+              )
+            )
+            );
+          } else if (status == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => DiseaseResult(
+                diseasePrediction : prediction,
+                diseaseStatus : status,
+                )
+              )
+            );
+          }
+        });
       } else {
         print('Failed with status: ${response.statusCode}');
       }
@@ -105,6 +132,7 @@ class ManualEntryDiabetesState extends State<ManualEntryDiabetes> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                _sizedBox(screenHeight),
                 _buildTextFormField(
                   labelText: 'No. of Pregnancies',
                   controller: pregnanciesController,
