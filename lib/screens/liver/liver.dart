@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'manual_entry_liver.dart';
+import 'package:health_sphere/screens/result.dart';
 
 class Liver extends StatefulWidget {
   const Liver({super.key});
@@ -35,6 +36,7 @@ class _LiverState extends State<Liver> {
       uploadImage(file.path);
     }
   }
+  
 
   Future<void> uploadImage(String filePath) async {
     Reference reference =
@@ -89,6 +91,10 @@ class _LiverState extends State<Liver> {
           .showSnackBar(SnackBar(content: Text('Please upload an image')));
       return;
     }
+
+    String prediction = "";
+    int status = -1;
+    
     Map<String, dynamic> data = {
       'disease_value': btnId,
       'upload_type': uploadType,
@@ -97,19 +103,39 @@ class _LiverState extends State<Liver> {
     print('$data');
     try {
       final response = await http.post(
-        Uri.parse('http://10.100.167.73:5000/predict'),
+        Uri.parse('http://192.168.211.34:5000/predict'),
         headers: <String, String>{
           'Content-Type': 'application/json',
         },
         body: jsonEncode(data),
       );
       if (response.statusCode == 200) {
-        // print('Response: ${response.body}');
-        // if (response.body == '1') {
-        //   Navigator.pushNamed(context, '/liver_result_positive');
-        // } else {
-        //   Navigator.pushNamed(context, '/liver_result_negative');
-        // }
+          print('Request successful: ${response.body}');
+          final jsonOutput = json.decode(response.body);
+          setState(() {
+            prediction = jsonOutput['prediction'];
+            status = jsonOutput['status'];
+
+            if (status == 0) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => DiseaseResult(
+                diseasePrediction : prediction,
+                diseaseStatus : status,
+              )
+            )
+            );
+          } else if (status == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => DiseaseResult(
+                diseasePrediction : prediction,
+                diseaseStatus : status,
+                )
+              )
+            );
+          }
+          });
       } else {
         print('Failed to send data. Status code: ${response.statusCode}');
       }

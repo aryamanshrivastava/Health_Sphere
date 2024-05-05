@@ -8,7 +8,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-
+import 'package:health_sphere/screens/result.dart';
 import 'manual_entry_diabeties.dart';
 
 class Diabeties extends StatefulWidget {
@@ -86,6 +86,10 @@ class _DiabetiesState extends State<Diabeties> {
           .showSnackBar(SnackBar(content: Text('Please upload an image')));
       return;
     }
+
+    String prediction = "";
+    int status = -1;
+    
     Map<String, dynamic> data = {
       'disease_value': btnId,
       'upload_type': uploadType,
@@ -94,15 +98,39 @@ class _DiabetiesState extends State<Diabeties> {
     print('$data');
     try {
       final response = await http.post(
-        Uri.parse('http://10.100.167.73:5000/predict'),
+        Uri.parse('http://192.168.211.34:5000/predict'),
         headers: <String, String>{
           'Content-Type': 'application/json',
         },
         body: jsonEncode(data),
       );
       if (response.statusCode == 200) {
-        // print('Data sent successfully');
-        // print('Response: ${response.body}');
+        print('Request successful: ${response.body}');
+          final jsonOutput = json.decode(response.body);
+          setState(() {
+            prediction = jsonOutput['prediction'];
+            status = jsonOutput['status'];
+
+            if (status == 0) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => DiseaseResult(
+                diseasePrediction : prediction,
+                diseaseStatus : status,
+              )
+            )
+            );
+          } else if (status == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => DiseaseResult(
+                diseasePrediction : prediction,
+                diseaseStatus : status,
+                )
+              )
+            );
+          }
+          });
       } else {
         print('Failed to send data. Status code: ${response.statusCode}');
       }

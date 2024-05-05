@@ -1,7 +1,9 @@
 // ignore_for_file: avoid_print, prefer_const_constructors
 
+import 'dart:convert';
+import 'package:health_sphere/screens/result.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class ManualEntryLiver extends StatefulWidget {
   const ManualEntryLiver({super.key});
@@ -44,19 +46,73 @@ class ManualEntryLiverState extends State<ManualEntryLiver> {
     super.dispose();
   }
 
-  String getConcatenatedValues() {
-    return [
-      ageController.text,
-      genderController.text,
-      totalBilirubinController.text,
-      directBilirubinController.text,
-      alkalinePhosphataseController.text,
-      alamineAminotransferaseController.text,
-      aspartateAminotransferaseController.text,
-      totalProteinController.text,
-      albuminController.text,
-      albuminAndGlobulinRatioController.text,
-    ].join(', ');
+  String prediction = "";
+  int status = -1;
+
+  Future<void> sendData() async {
+    Map<String, dynamic> jsonData = {
+      "disease_value": 1,
+      "upload_type": "M",
+      "parameters": [
+        {
+          "age": int.parse(ageController.text),
+          "gender": int.parse(genderController.text),
+          "total_bilirubin": double.parse(totalBilirubinController.text),
+          "direct_bilirubin": double.parse(directBilirubinController.text),
+          "alp": double.parse(alkalinePhosphataseController.text),
+          "sgpt": double.parse(alamineAminotransferaseController.text),
+          "sgot": double.parse(aspartateAminotransferaseController.text),
+          "total_proteins": double.parse(totalProteinController.text),
+          "albumin": double.parse(albuminController.text),
+          "a:g_ratio": double.parse(albuminAndGlobulinRatioController.text)
+        }
+      ] 
+    };
+
+    print(jsonData);
+    String requestBody = jsonEncode(jsonData);
+
+    try{
+      var response = await http.post(
+        Uri.parse('http://192.168.211.34:5000/predict'),
+        headers: <String, String>{
+          'Content-Type' : 'application/json; charset=UTF-8',
+        },
+        body: requestBody
+      );
+      if (response.statusCode == 200) {
+        print('Request successful: ${response.body}');
+        final jsonOutput = json.decode(response.body);
+        setState(() {
+          prediction = jsonOutput['prediction'];
+          status = jsonOutput['status'];
+
+          if (status == 0) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => DiseaseResult(
+                diseasePrediction : prediction,
+                diseaseStatus : status,
+              )
+            )
+            );
+          } else if (status == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => DiseaseResult(
+                diseasePrediction : prediction,
+                diseaseStatus : status,
+                )
+              )
+            );
+          }
+        });
+      } else {
+        print('Failed with status: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error sending request: $e');
+    }
   }
 
   @override
@@ -138,19 +194,7 @@ class ManualEntryLiverState extends State<ManualEntryLiver> {
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
                       formKey.currentState!.save();
-                      // Print the values in an array format
-                      print([
-                        ageController.text,
-                        genderController.text,
-                        totalBilirubinController.text,
-                        directBilirubinController.text,
-                        alkalinePhosphataseController.text,
-                        alamineAminotransferaseController.text,
-                        aspartateAminotransferaseController.text,
-                        totalProteinController.text,
-                        albuminController.text,
-                        albuminAndGlobulinRatioController.text,
-                      ]);
+                      sendData();
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -164,12 +208,6 @@ class ManualEntryLiverState extends State<ManualEntryLiver> {
                       style: TextStyle(fontSize: 22, color: Colors.white)),
                 ),
                 _sizedBox(screenHeight),
-                Center(
-                  child: Text(
-                    "Values Collected in this form ${getConcatenatedValues()}",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                )
               ],
             ),
           ),

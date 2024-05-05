@@ -1,7 +1,6 @@
 // ignore_for_file: avoid_print, prefer_const_constructors
 
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:health_sphere/screens/result.dart';
 import 'package:http/http.dart' as http;
@@ -40,14 +39,10 @@ class ManualEntryDiabetesState extends State<ManualEntryDiabetes> {
     super.dispose();
   }
 
-  // String getConcatenatedValues() {
-  //   return '[${pregnanciesController.text}, ${glucoseController.text}, ${bloodPressureController.text}, ${skinThicknessController.text}, ${insulinController.text}, ${bmiController.text}, ${diabetesPedigreeController.text}, ${ageController.text}]';
-  // }
   String prediction = "";
   int status = -1;
 
   Future<void> sendData() async {
-    // Prepare the data to be sent
     Map<String, dynamic> jsonData = {
       "disease_value": 2,
       "upload_type": "M",
@@ -67,7 +62,7 @@ class ManualEntryDiabetesState extends State<ManualEntryDiabetes> {
 
     try {
       var response = await http.post(
-        Uri.parse('http://192.168.178.34:5000/predict'),
+        Uri.parse('http://192.168.211.34:5000/predict'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -174,12 +169,6 @@ class ManualEntryDiabetesState extends State<ManualEntryDiabetes> {
                       style: TextStyle(color: Colors.white, fontSize: 22)),
                 ),
                 _sizedBox(screenHeight),
-                // Center(
-                //   child: Text(
-                //     "Values Collected in this form ${getConcatenatedValues()}",
-                //     style: TextStyle(color: Colors.white),
-                //   ),
-                // ),
               ],
             ),
           ),
