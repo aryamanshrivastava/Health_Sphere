@@ -2,7 +2,6 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:health_sphere/screens/result.dart';
 import 'package:health_sphere/screens/splash.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
