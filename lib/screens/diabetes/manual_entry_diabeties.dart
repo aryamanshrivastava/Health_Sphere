@@ -1,6 +1,9 @@
 // ignore_for_file: avoid_print, prefer_const_constructors
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class ManualEntryDiabetes extends StatefulWidget {
   const ManualEntryDiabetes({super.key});
@@ -36,8 +39,46 @@ class ManualEntryDiabetesState extends State<ManualEntryDiabetes> {
     super.dispose();
   }
 
-  String getConcatenatedValues() {
-    return '[${pregnanciesController.text}, ${glucoseController.text}, ${bloodPressureController.text}, ${skinThicknessController.text}, ${insulinController.text}, ${bmiController.text}, ${diabetesPedigreeController.text}, ${ageController.text}]';
+  // String getConcatenatedValues() {
+  //   return '[${pregnanciesController.text}, ${glucoseController.text}, ${bloodPressureController.text}, ${skinThicknessController.text}, ${insulinController.text}, ${bmiController.text}, ${diabetesPedigreeController.text}, ${ageController.text}]';
+  // }
+
+  Future<void> sendData() async {
+    // Prepare the data to be sent
+    Map<String, dynamic> jsonData = {
+      "disease value": 2,
+      "upload_type": "M",
+      "parameters": [
+        {
+          "pedi": double.parse(diabetesPedigreeController.text),
+          "mass": double.parse(bmiController.text),
+          "preg": int.parse(pregnanciesController.text),
+          "age": int.parse(ageController.text),
+          "plas": int.parse(glucoseController.text)
+        }
+      ]
+    };
+
+    print(jsonData);
+    String requestBody = jsonEncode(jsonData);
+
+    try {
+      var response = await http.post(
+        Uri.parse('http://10.100.167.73:5000/predict'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: requestBody,
+      );
+      if (response.statusCode == 200) {
+        //navigate to the result page
+        //print('Request successful: ${response.body}');
+      } else {
+        print('Failed with status: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error sending request: $e');
+    }
   }
 
   @override
@@ -91,14 +132,6 @@ class ManualEntryDiabetesState extends State<ManualEntryDiabetes> {
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
                       formKey.currentState!.save();
-                      // Print the values in an array format
-                      print([
-                        diabetesPedigreeController.text,
-                        bmiController.text,
-                        pregnanciesController.text,
-                        ageController.text,
-                        glucoseController.text
-                      ]);
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -112,12 +145,12 @@ class ManualEntryDiabetesState extends State<ManualEntryDiabetes> {
                       style: TextStyle(color: Colors.white, fontSize: 22)),
                 ),
                 _sizedBox(screenHeight),
-                Center(
-                  child: Text(
-                    "Values Collected in this form ${getConcatenatedValues()}",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
+                // Center(
+                //   child: Text(
+                //     "Values Collected in this form ${getConcatenatedValues()}",
+                //     style: TextStyle(color: Colors.white),
+                //   ),
+                // ),
               ],
             ),
           ),
