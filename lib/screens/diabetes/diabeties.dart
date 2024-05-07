@@ -58,16 +58,18 @@ class _DiabetiesState extends State<Diabeties> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-            title: Text("Image Uploaded Successfully,\nWait for the results!",
+            title: Text("Image uploaded successfully,\nWait for the results!",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 25)),
             content: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xffEF3D49),
                         foregroundColor: Color(0xffFFFFFF),
-                        minimumSize: Size(100, 50)),
+                        minimumSize: Size(100, 50),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
                     onPressed: () => Navigator.pop(context),
                     child: Text("Cancel")),
                 Spacer(),
@@ -75,7 +77,8 @@ class _DiabetiesState extends State<Diabeties> {
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xffEF3D49),
                       foregroundColor: Color(0xffFFFFFF),
-                      minimumSize: Size(100, 50)),
+                      minimumSize: Size(100, 50),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
                   onPressed: () {
                     Navigator.pop(context);
                     sendDataOCR(2, uploadType, imageUrl);
@@ -238,9 +241,14 @@ class _DiabetiesState extends State<Diabeties> {
               ? Center(
                   child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    CircularProgressIndicator(),
-                    Text('Uploading Image...'),
+                  children: [
+                    CircularProgressIndicator(
+                       valueColor: AlwaysStoppedAnimation<Color>(Color(0xffEF3D49))
+                    ),
+                    SizedBox(height: h * 0.01,),
+                    Text('Uploading Image...',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ],
                 ))
               : Padding(

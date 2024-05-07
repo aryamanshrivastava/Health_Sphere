@@ -58,7 +58,7 @@ class _LiverState extends State<Liver> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-            title: Text("Image Uploaded Successfully,\nWait for the results!",
+            title: Text("Image uploaded successfully,\nWait for the results!",
                 textAlign: TextAlign.center, style: TextStyle(fontSize: 25)),
             content: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -67,14 +67,16 @@ class _LiverState extends State<Liver> {
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xffEF3D49),
                         foregroundColor: Color(0xffFFFFFF),
-                        minimumSize: Size(100, 50)),
+                        minimumSize: Size(100, 50),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
                     onPressed: () => Navigator.pop(context),
                     child: Text("Cancel")),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xffEF3D49),
                       foregroundColor: Color(0xffFFFFFF),
-                      minimumSize: Size(100, 50)),
+                      minimumSize: Size(100, 50),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
                   onPressed: () {
                     Navigator.pop(context);
                     sendData(1, uploadType, imageUrl);
@@ -232,9 +234,14 @@ class _LiverState extends State<Liver> {
               ? Center(
                   child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    CircularProgressIndicator(),
-                    Text('Uploading Image...'),
+                  children: [
+                    CircularProgressIndicator(
+                       valueColor: AlwaysStoppedAnimation<Color>(Color(0xffEF3D49))
+                    ),
+                    SizedBox(height: h * 0.01,),
+                    Text('Uploading Image...',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ],
                 ))
               : Padding(
