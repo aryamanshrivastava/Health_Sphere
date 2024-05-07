@@ -72,7 +72,6 @@ class _DiabetiesState extends State<Diabeties> {
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
                     onPressed: () => Navigator.pop(context),
                     child: Text("Cancel")),
-                Spacer(),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xffEF3D49),
@@ -137,8 +136,7 @@ class _DiabetiesState extends State<Diabeties> {
           status = jsonOutput['status'];
 
           if (status == 0) {
-            Navigator.push(
-              context,
+            Navigator.push(context,
               MaterialPageRoute(
                 builder: (context) => DiseaseResult(
                   diseasePrediction: prediction,
@@ -180,10 +178,7 @@ class _DiabetiesState extends State<Diabeties> {
       }
     } catch (e) {
       print('Error sending data: $e');
-    } finally {
-      // ignore: use_build_context_synchronously
-      Navigator.pop(context);
-    }
+    } 
   }
 
   void showOptionsDialog() {
@@ -196,7 +191,7 @@ class _DiabetiesState extends State<Diabeties> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                  splashColor: Color(0xFFEF3D49),
+                  splashColor: Colors.white,
                   title: Text("Upload from device",
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
@@ -205,7 +200,7 @@ class _DiabetiesState extends State<Diabeties> {
                     pickImage(ImageSource.gallery);
                   }),
               ListTile(
-                  splashColor: Color(0xFFEF3D49),
+                  splashColor: Colors.white,
                   title: Text("Use camera",
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),

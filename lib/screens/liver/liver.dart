@@ -172,9 +172,7 @@ class _LiverState extends State<Liver> {
       }
     } catch (e) {
       print('Error sending data: $e');
-    } finally {
-      Navigator.pop(context);
-    }
+    } 
   }
 
   void showOptionsDialog() {
