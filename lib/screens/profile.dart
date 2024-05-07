@@ -30,9 +30,7 @@ class _ProfileState extends State<Profile> {
       uid = currentUser!.uid;
       fetchUserData(uid).then((DocumentSnapshot userData) {
         if (userData.exists && userData.data() != null) {
-          // Access user data from the snapshot and update the UI
           setState(() {
-            // Example of accessing user name and updating UI
             userName = userData['name'];
             userEmail = userData['email'];
             userPhoneNumber = userData['phone'];
@@ -83,29 +81,28 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
     double h = MediaQuery.of(context).size.height;
-
     return SafeArea(
         child: Scaffold(
             backgroundColor: Colors.white,
             body: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.fromLTRB(15, 10, 15, 15),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: h * 0.03),
                   Center(
                     child: Text(
-                      "Profile Details",
+                      "Your profile details",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 22,
                       ),
                     ),
                   ),
-                  SizedBox(height: h * 0.04),
+                  SizedBox(height: h * 0.03),
                   Center(
                     child: CircleAvatar(
-                      radius: 80,
+                      radius: 100,
                       backgroundImage: AssetImage(_getUserImage(userGender)),
                     ),
                   ),
@@ -286,7 +283,7 @@ class _ProfileState extends State<Profile> {
                       ),
                     ],
                   ),
-                  SizedBox(height: h * 0.05),
+                  SizedBox(height: h * 0.1),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [

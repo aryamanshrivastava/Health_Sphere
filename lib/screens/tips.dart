@@ -20,13 +20,13 @@ class _TipsState extends State<Tips> {
         child: Scaffold(
             backgroundColor: Colors.white,
             body: Padding(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.fromLTRB(15, 10, 15, 15),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: h * 0.03),
                   Text(
-                    "These are Some of the Unique Tips to Stay Healthy.",
+                    "These are some of the unique tips to stay healthy.",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
                   ),
                   SizedBox(height: h * 0.02),
